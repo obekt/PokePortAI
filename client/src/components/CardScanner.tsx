@@ -147,24 +147,63 @@ export default function CardScanner() {
   };
 
   const capturePhoto = () => {
-    if (videoRef.current && canvasRef.current) {
-      const video = videoRef.current;
-      const canvas = canvasRef.current;
-      const context = canvas.getContext('2d');
-      
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      context?.drawImage(video, 0, 0);
-      
-      canvas.toBlob((blob) => {
-        if (blob) {
-          const formData = new FormData();
-          formData.append('image', blob, 'capture.jpg');
-          scanMutation.mutate(formData);
-          stopCamera();
-        }
-      }, 'image/jpeg', 0.8);
+    console.log("Capturing photo...");
+    
+    if (!videoRef.current) {
+      console.error("Video ref is null");
+      return;
     }
+    
+    if (!canvasRef.current) {
+      console.error("Canvas ref is null");
+      return;
+    }
+    
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+    
+    if (!context) {
+      console.error("Could not get canvas context");
+      return;
+    }
+    
+    console.log("Video dimensions:", video.videoWidth, "x", video.videoHeight);
+    
+    if (video.videoWidth === 0 || video.videoHeight === 0) {
+      console.error("Video has no dimensions");
+      toast({
+        title: "Camera not ready",
+        description: "Please wait for the camera to fully load before capturing.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0);
+    
+    console.log("Canvas dimensions:", canvas.width, "x", canvas.height);
+    
+    canvas.toBlob((blob) => {
+      console.log("Blob created:", blob);
+      if (blob) {
+        console.log("Blob size:", blob.size, "bytes");
+        const formData = new FormData();
+        formData.append('image', blob, 'capture.jpg');
+        console.log("Sending image to server...");
+        scanMutation.mutate(formData);
+        stopCamera();
+      } else {
+        console.error("Failed to create blob from canvas");
+        toast({
+          title: "Capture failed",
+          description: "Could not capture image from camera.",
+          variant: "destructive",
+        });
+      }
+    }, 'image/jpeg', 0.8);
   };
 
   const stopCamera = () => {
