@@ -1,8 +1,8 @@
-# PokéScan: Pokemon Card Recognition and Portfolio Management App
+# Poke Port AI: Pokemon Card Recognition and Portfolio Management App
 
 ## Overview
 
-PokéScan is a full-stack web application that allows users to scan Pokemon cards using AI recognition, track their card portfolio, and view market analysis. The app combines computer vision technology with market data to help collectors manage and value their Pokemon card collections.
+Poke Port AI is a full-stack web application that allows users to scan Pokemon cards using AI recognition, track their card portfolio, and view market analysis. The app combines computer vision technology with market data to help collectors manage and value their Pokemon card collections.
 
 ## User Preferences
 

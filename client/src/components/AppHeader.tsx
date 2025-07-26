@@ -31,7 +31,7 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Camera className="text-primary h-6 w-6 mr-3" />
-            <h1 className="text-xl font-medium text-gray-900">PokéScan</h1>
+            <h1 className="text-xl font-medium text-gray-900">Poke Port AI</h1>
           </div>
           
           {!isMobile && (
