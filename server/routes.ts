@@ -4,7 +4,7 @@ import { storage } from "./storage";
 import { insertCardSchema, updateCardSchema } from "@shared/schema";
 import { recognizeCard } from "./services/openai";
 import { getMarketPrice, getTrendingCards } from "./services/marketData";
-import { setupGoogleAuth, isAuthenticated } from "./googleAuth";
+import { setupAuth, isAuthenticated } from "./replitAuth";
 import multer from "multer";
 
 const upload = multer({ 
@@ -14,9 +14,19 @@ const upload = multer({
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
-  setupGoogleAuth(app);
+  await setupAuth(app);
 
-  // Note: Auth routes are handled in googleAuth.ts
+  // Auth routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
 
   // Get all cards
   app.get("/api/cards", isAuthenticated, async (req: any, res) => {

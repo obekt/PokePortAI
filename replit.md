@@ -22,6 +22,7 @@ Preferred communication style: Simple, everyday language.
 - **Runtime**: Node.js with Express.js
 - **Language**: TypeScript with ES modules
 - **API Pattern**: RESTful API endpoints
+- **Authentication**: Replit OAuth with session-based authentication
 - **File Uploads**: Multer middleware for image processing
 - **Development**: tsx for TypeScript execution in development
 
