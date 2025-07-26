@@ -11,7 +11,8 @@ export interface MarketPrice {
     high: number;
   };
   recentSales: number;
-  priceChange: number; // percentage
+  priceChange: number;
+  imageUrl?: string;
 }
 
 export async function getMarketPrice(cardName: string, set: string, condition: string): Promise<MarketPrice> {
@@ -59,7 +60,7 @@ export async function getMarketPrice(cardName: string, set: string, condition: s
   };
 }
 
-async function fetchPokemonTCGPrice(cardName: string, set: string): Promise<{averagePrice: number, recentSales?: number, priceChange?: number} | null> {
+async function fetchPokemonTCGPrice(cardName: string, set: string): Promise<{averagePrice: number, recentSales?: number, priceChange?: number, imageUrl?: string} | null> {
   try {
     // Multiple search strategies for better results
     const searchQueries = [
@@ -103,7 +104,8 @@ async function fetchPokemonTCGPrice(cardName: string, set: string): Promise<{ave
               return {
                 averagePrice: avgPrice,
                 recentSales: Math.floor(Math.random() * 25) + 15,
-                priceChange: Number(((Math.random() - 0.5) * 12).toFixed(2))
+                priceChange: Number(((Math.random() - 0.5) * 12).toFixed(2)),
+                imageUrl: bestMatch.images?.small || bestMatch.images?.large
               };
             }
           }
@@ -245,11 +247,36 @@ function getConditionMultiplier(condition: string): number {
 export async function getTrendingCards(): Promise<MarketPrice[]> {
   // Use popular current cards to avoid API rate limits and 404 errors
   const popularCards = [
-    { name: "Charizard ex", set: "Paldea Evolved", condition: "Near Mint" },
-    { name: "Miraidon ex", set: "Scarlet & Violet", condition: "Near Mint" },
-    { name: "Koraidon ex", set: "Scarlet & Violet", condition: "Near Mint" },
-    { name: "Chien-Pao ex", set: "Paldea Evolved", condition: "Near Mint" },
-    { name: "Gardevoir ex", set: "Scarlet & Violet", condition: "Near Mint" }
+    { 
+      name: "Charizard ex", 
+      set: "Paldea Evolved", 
+      condition: "Near Mint",
+      imageUrl: "https://images.pokemontcg.io/sv2/1.png"
+    },
+    { 
+      name: "Miraidon ex", 
+      set: "Scarlet & Violet", 
+      condition: "Near Mint",
+      imageUrl: "https://images.pokemontcg.io/sv1/81.png"
+    },
+    { 
+      name: "Koraidon ex", 
+      set: "Scarlet & Violet", 
+      condition: "Near Mint",
+      imageUrl: "https://images.pokemontcg.io/sv1/67.png"
+    },
+    { 
+      name: "Chien-Pao ex", 
+      set: "Paldea Evolved", 
+      condition: "Near Mint",
+      imageUrl: "https://images.pokemontcg.io/sv2/61.png"
+    },
+    { 
+      name: "Gardevoir ex", 
+      set: "Scarlet & Violet", 
+      condition: "Near Mint",
+      imageUrl: "https://images.pokemontcg.io/sv1/86.png"
+    }
   ];
   
   try {
@@ -271,6 +298,7 @@ export async function getTrendingCards(): Promise<MarketPrice[]> {
       },
       recentSales: Math.floor(Math.random() * 40) + 20,
       priceChange: Number(((Math.random() - 0.5) * 12).toFixed(2)),
+      imageUrl: card.imageUrl
     }));
   }
 }

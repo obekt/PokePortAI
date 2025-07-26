@@ -6,8 +6,9 @@ interface MarketPrice {
   cardName: string;
   set: string;
   averagePrice: number;
-  priceChange: string;
-  dailyVolume: number;
+  priceChange: number;
+  recentSales: number;
+  imageUrl?: string;
 }
 
 export default function TrendingCardsGrid() {
@@ -38,9 +39,23 @@ export default function TrendingCardsGrid() {
       {trendingCards.map((card) => (
         <Card 
           key={card.cardName} 
-          className="card-glass cursor-pointer"
+          className="card-glass cursor-pointer hover:shadow-lg transition-shadow duration-200"
           onClick={() => setLocation(`/card/${encodeURIComponent(card.cardName)}`)}
         >
+          {card.imageUrl && (
+            <div className="relative overflow-hidden rounded-t-lg">
+              <img
+                src={card.imageUrl}
+                alt={`${card.cardName} Pokemon card`}
+                className="w-full h-32 object-cover hover:scale-105 transition-transform duration-200"
+                onError={(e) => {
+                  // Hide image container if image fails to load
+                  e.currentTarget.parentElement!.style.display = 'none';
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            </div>
+          )}
           <CardContent className="p-4">
             <h4 className="font-semibold text-slate-800 text-sm mb-2">{card.cardName}</h4>
             <p className="text-xs text-slate-500 mb-2">{card.set}</p>
@@ -55,7 +70,7 @@ export default function TrendingCardsGrid() {
               </span>
             </div>
             <div className="mt-2 flex justify-between text-xs text-slate-500">
-              <span>Volume: {card.dailyVolume}</span>
+              <span>Sales: {card.recentSales}</span>
             </div>
           </CardContent>
         </Card>
