@@ -188,19 +188,37 @@ export default function CardScanner() {
             </div>
           </div>
         ) : (
-          <div className="relative">
+          <div className="relative border-2 border-primary rounded-lg overflow-hidden">
+            {/* Camera Feed Header */}
+            <div className="bg-primary text-white p-3 text-center">
+              <p className="font-medium">Position your Pokemon card in the frame</p>
+              <p className="text-sm opacity-90">Make sure the entire card is visible</p>
+            </div>
+            
+            {/* Video Feed */}
             <video
               ref={videoRef}
               autoPlay
               playsInline
-              className="w-full rounded-lg"
+              className="w-full h-80 object-cover bg-black"
             />
+            
+            {/* Overlay Guide */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute inset-8 border-2 border-white border-dashed rounded-lg opacity-70">
+                <div className="absolute top-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                  Place card here
+                </div>
+              </div>
+            </div>
+            
+            {/* Control Buttons */}
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-4">
-              <Button onClick={capturePhoto} size="lg" className="bg-primary hover:bg-blue-700">
+              <Button onClick={capturePhoto} size="lg" className="bg-green-600 hover:bg-green-700 shadow-lg">
                 <Camera className="mr-2 h-4 w-4" />
-                Capture
+                Capture Photo
               </Button>
-              <Button onClick={stopCamera} variant="outline" size="lg">
+              <Button onClick={stopCamera} variant="outline" size="lg" className="bg-white shadow-lg">
                 Cancel
               </Button>
             </div>
