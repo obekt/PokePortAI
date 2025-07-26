@@ -71,15 +71,15 @@
 }
 
 @layer components {
-  /* Collectr-style card hover effects */
-  .collectr-card {
+  /* Card hover effects */
+  .card-glass {
     @apply transform transition-all duration-300 ease-out hover:scale-105 hover:shadow-xl;
     background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(248,250,252,0.9));
     backdrop-filter: blur(10px);
     border: 1px solid rgba(226, 232, 240, 0.5);
   }
   
-  /* Gradient buttons like Collectr */
+  /* Gradient buttons */
   .gradient-primary {
     background: var(--gradient-primary);
     @apply text-white font-semibold;
@@ -95,7 +95,7 @@
     @apply text-white font-semibold;
   }
   
-  /* Collectr-style stats cards */
+  /* Stats cards */
   .stats-card {
     @apply bg-white rounded-xl shadow-lg border border-slate-200 p-6 text-center;
     background: linear-gradient(145deg, #ffffff, #f8fafc);

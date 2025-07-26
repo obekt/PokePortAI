@@ -29,7 +29,7 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-20 md:pb-8">
         {/* Scanner Section */}
         <section id="scanner" className="mb-12">
-          <div className="collectr-card p-8 rounded-2xl">
+          <div className="card-glass p-8 rounded-2xl">
             <div className="flex items-center mb-6">
               <div className="gradient-primary p-3 rounded-xl mr-4">
                 <Camera className="h-6 w-6 text-white" />
@@ -55,7 +55,7 @@ export default function Home() {
 
         {/* Market Overview Section */}
         <section id="market" className="mb-12">
-          <div className="collectr-card p-8 rounded-2xl">
+          <div className="card-glass p-8 rounded-2xl">
             <div className="flex items-center mb-6">
               <div className="gradient-secondary p-3 rounded-xl mr-4">
                 <TrendingUp className="h-6 w-6 text-white" />

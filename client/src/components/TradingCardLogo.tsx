@@ -76,22 +76,34 @@ export default function TradingCardLogo({ size = 48, className = "" }: TradingCa
         <circle
           cx="24"
           cy="20"
-          r="8"
-          fill="rgba(255,255,255,0.9)"
+          r="12"
+          fill="rgba(255,255,255,0.95)"
           filter="url(#glow)"
         />
         
-        {/* Camera Body */}
+        {/* Camera Body - Much Larger */}
         <rect
-          x="19"
-          y="16"
-          width="10"
-          height="8"
-          rx="1"
+          x="16"
+          y="13"
+          width="16"
+          height="14"
+          rx="2"
           fill="#1f2937"
         />
         
-        {/* Camera Lens */}
+        {/* Camera Lens - Larger and More Detailed */}
+        <circle
+          cx="24"
+          cy="20"
+          r="5"
+          fill="#374151"
+        />
+        <circle
+          cx="24"
+          cy="20"
+          r="4"
+          fill="#111827"
+        />
         <circle
           cx="24"
           cy="20"
@@ -101,23 +113,44 @@ export default function TradingCardLogo({ size = 48, className = "" }: TradingCa
         <circle
           cx="24"
           cy="20"
-          r="2"
-          fill="#111827"
-        />
-        <circle
-          cx="24"
-          cy="20"
-          r="1"
+          r="1.5"
           fill="#6b7280"
         />
         
-        {/* Camera Flash */}
+        {/* Camera Flash - Larger */}
         <rect
-          x="21"
-          y="17"
-          width="1.5"
-          height="1"
+          x="18"
+          y="15"
+          width="2.5"
+          height="2"
+          rx="0.5"
           fill="#fbbf24"
+        />
+        
+        {/* Viewfinder */}
+        <rect
+          x="27"
+          y="15"
+          width="2"
+          height="1.5"
+          rx="0.5"
+          fill="#6b7280"
+        />
+        
+        {/* Camera Grip Details */}
+        <rect
+          x="17"
+          y="24"
+          width="14"
+          height="1"
+          fill="#374151"
+        />
+        <rect
+          x="17"
+          y="26"
+          width="14"
+          height="0.5"
+          fill="#4b5563"
         />
         
         {/* Card Title Area */}

@@ -88,7 +88,7 @@ export default function CardDetails() {
         </div>
 
         {/* Card Info Header */}
-        <div className="collectr-card p-8 rounded-2xl mb-8">
+        <div className="card-glass p-8 rounded-2xl mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
@@ -142,7 +142,7 @@ export default function CardDetails() {
         </div>
 
         {/* Price Chart */}
-        <Card className="collectr-card mb-8">
+        <Card className="card-glass mb-8">
           <CardHeader>
             <CardTitle className="text-slate-800">6-Month Price History</CardTitle>
           </CardHeader>
@@ -172,7 +172,7 @@ export default function CardDetails() {
         </Card>
 
         {/* Volume Chart */}
-        <Card className="collectr-card mb-8">
+        <Card className="card-glass mb-8">
           <CardHeader>
             <CardTitle className="text-slate-800">Trading Volume</CardTitle>
           </CardHeader>
@@ -195,7 +195,7 @@ export default function CardDetails() {
         </Card>
 
         {/* External Links */}
-        <Card className="collectr-card">
+        <Card className="card-glass">
           <CardHeader>
             <CardTitle className="text-slate-800">View on Marketplaces</CardTitle>
           </CardHeader>

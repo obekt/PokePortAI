@@ -32,7 +32,7 @@ export default function Landing() {
 
         {/* Features */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          <Card className="collectr-card text-center p-6">
+          <Card className="card-glass text-center p-6">
             <CardHeader>
               <div className="gradient-primary p-3 rounded-xl w-fit mx-auto mb-4">
                 <Camera className="w-8 h-8 text-white" />
@@ -46,7 +46,7 @@ export default function Landing() {
             </CardContent>
           </Card>
 
-          <Card className="collectr-card text-center p-6">
+          <Card className="card-glass text-center p-6">
             <CardHeader>
               <div className="gradient-accent p-3 rounded-xl w-fit mx-auto mb-4">
                 <Scan className="w-8 h-8 text-white" />
@@ -60,7 +60,7 @@ export default function Landing() {
             </CardContent>
           </Card>
 
-          <Card className="collectr-card text-center p-6">
+          <Card className="card-glass text-center p-6">
             <CardHeader>
               <div className="gradient-secondary p-3 rounded-xl w-fit mx-auto mb-4">
                 <TrendingUp className="w-8 h-8 text-white" />
@@ -74,7 +74,7 @@ export default function Landing() {
             </CardContent>
           </Card>
 
-          <Card className="collectr-card text-center p-6">
+          <Card className="card-glass text-center p-6">
             <CardHeader>
               <div className="gradient-accent p-3 rounded-xl w-fit mx-auto mb-4">
                 <ShieldCheck className="w-8 h-8 text-white" />

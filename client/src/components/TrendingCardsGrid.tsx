@@ -21,7 +21,7 @@ export default function TrendingCardsGrid() {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
         {[...Array(5)].map((_, i) => (
-          <Card key={i} className="collectr-card animate-pulse">
+          <Card key={i} className="card-glass animate-pulse">
             <CardContent className="p-4">
               <div className="h-4 bg-slate-200 rounded mb-2"></div>
               <div className="h-3 bg-slate-200 rounded mb-2"></div>
@@ -38,7 +38,7 @@ export default function TrendingCardsGrid() {
       {trendingCards.map((card) => (
         <Card 
           key={card.cardName} 
-          className="collectr-card cursor-pointer"
+          className="card-glass cursor-pointer"
           onClick={() => setLocation(`/card/${encodeURIComponent(card.cardName)}`)}
         >
           <CardContent className="p-4">
