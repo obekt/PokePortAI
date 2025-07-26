@@ -113,20 +113,28 @@ export default function CardScanner() {
       
       console.log("Camera stream obtained:", stream);
       
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        setIsCameraActive(true);
-        setIsCameraStarting(false);
-        console.log("Camera activated, isCameraActive set to true");
-        
-        // Wait for video to load
-        videoRef.current.onloadedmetadata = () => {
-          console.log("Video metadata loaded");
-        };
-      } else {
-        console.error("Video ref is null");
-        setIsCameraStarting(false);
-      }
+      // First set camera active to render the video element
+      setIsCameraActive(true);
+      setIsCameraStarting(false);
+      
+      // Use setTimeout to ensure video element is rendered before accessing it
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          console.log("Camera stream assigned to video element");
+          
+          // Wait for video to load
+          videoRef.current.onloadedmetadata = () => {
+            console.log("Video metadata loaded");
+          };
+        } else {
+          console.error("Video ref is still null after timeout");
+          // Stop the stream if we can't use it
+          stream.getTracks().forEach(track => track.stop());
+          setIsCameraActive(false);
+        }
+      }, 100);
+      
     } catch (error) {
       console.error("Camera error:", error);
       setIsCameraStarting(false);
