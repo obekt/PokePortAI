@@ -1,9 +1,10 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertCardSchema } from "@shared/schema";
+import { insertCardSchema, updateCardSchema } from "@shared/schema";
 import { recognizeCard } from "./services/openai";
 import { getMarketPrice, getTrendingCards } from "./services/marketData";
+import { setupAuth, isAuthenticated } from "./replitAuth";
 import multer from "multer";
 
 const upload = multer({ 
@@ -12,10 +13,26 @@ const upload = multer({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Get all cards
-  app.get("/api/cards", async (req, res) => {
+  // Auth middleware
+  await setupAuth(app);
+
+  // Auth routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
-      const cards = await storage.getAllCards();
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  // Get all cards
+  app.get("/api/cards", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const cards = await storage.getAllCards(userId);
       res.json(cards);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch cards" });
@@ -36,7 +53,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Scan card with AI recognition
-  app.post("/api/cards/scan", upload.single('image'), async (req, res) => {
+  app.post("/api/cards/scan", isAuthenticated, upload.single('image'), async (req: any, res) => {
     try {
       console.log("Received scan request:");
       console.log("- req.file:", req.file ? `${req.file.size} bytes, ${req.file.mimetype}` : "null");
@@ -75,10 +92,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Add card to portfolio
-  app.post("/api/cards", async (req, res) => {
+  app.post("/api/cards", isAuthenticated, async (req: any, res) => {
     try {
+      const userId = req.user.claims.sub;
       const validatedData = insertCardSchema.parse(req.body);
-      const card = await storage.createCard(validatedData);
+      const card = await storage.createCard(userId, validatedData);
       res.status(201).json(card);
     } catch (error) {
       res.status(400).json({ 
@@ -89,9 +107,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Update card
-  app.patch("/api/cards/:id", async (req, res) => {
+  app.patch("/api/cards/:id", isAuthenticated, async (req: any, res) => {
     try {
-      const updates = insertCardSchema.partial().parse(req.body);
+      const updates = updateCardSchema.parse(req.body);
       const card = await storage.updateCard(req.params.id, updates);
       if (!card) {
         return res.status(404).json({ message: "Card not found" });
@@ -106,7 +124,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Delete card
-  app.delete("/api/cards/:id", async (req, res) => {
+  app.delete("/api/cards/:id", isAuthenticated, async (req: any, res) => {
     try {
       const deleted = await storage.deleteCard(req.params.id);
       if (!deleted) {
@@ -119,9 +137,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get portfolio statistics
-  app.get("/api/portfolio/stats", async (req, res) => {
+  app.get("/api/portfolio/stats", isAuthenticated, async (req: any, res) => {
     try {
-      const cards = await storage.getAllCards();
+      const userId = req.user.claims.sub;
+      const cards = await storage.getAllCards(userId);
       const totalCards = cards.length;
       const totalValue = cards.reduce((sum, card) => sum + parseFloat(card.estimatedValue), 0);
       const avgValue = totalCards > 0 ? totalValue / totalCards : 0;

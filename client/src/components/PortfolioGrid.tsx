@@ -5,9 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { isUnauthorizedError } from "@/lib/authUtils";
 import { Download, BarChart3, Eye, Trash2, Grid3X3, List, Loader2, Edit, ExternalLink } from "lucide-react";
 import EditCardDialog from "./EditCardDialog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Card as CardType } from "@shared/schema";
 
 export default function PortfolioGrid() {
@@ -17,8 +18,23 @@ export default function PortfolioGrid() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
+  // Handle authentication errors globally for this component
+  const handleAuthError = (error: Error) => {
+    if (isUnauthorizedError(error)) {
+      toast({
+        title: "Session Expired",
+        description: "Redirecting to login...",
+        variant: "destructive",
+      });
+      setTimeout(() => {
+        window.location.href = "/api/login";
+      }, 500);
+    }
+  };
+
   const { data: cards = [], isLoading } = useQuery<CardType[]>({
     queryKey: ['/api/cards'],
+    retry: false,
   });
 
   const { data: portfolioStats } = useQuery<{
@@ -28,6 +44,7 @@ export default function PortfolioGrid() {
     topCard: string;
   }>({
     queryKey: ['/api/portfolio/stats'],
+    retry: false,
   });
 
   const deleteCardMutation = useMutation({

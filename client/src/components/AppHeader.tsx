@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Camera, UserCircle } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useToast } from "@/hooks/use-toast";
+import { isUnauthorizedError } from "@/lib/authUtils";
 
 interface AppHeaderProps {
   activeSection: string;
@@ -11,8 +13,16 @@ interface AppHeaderProps {
 export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps) {
   const isMobile = useIsMobile();
 
-  const { data: portfolioStats } = useQuery({
+  const { toast } = useToast();
+  
+  const { data: portfolioStats } = useQuery<{
+    totalCards: number;
+    totalValue: string;
+    avgValue: string;
+    topCard: string;
+  }>({
     queryKey: ['/api/portfolio/stats'],
+    retry: false,
   });
 
   return (
@@ -69,8 +79,14 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
                 ${portfolioStats?.totalValue || "0.00"}
               </span>
             </span>
-            <Button variant="ghost" size="sm" className="p-2">
-              <UserCircle className="h-5 w-5 text-gray-600" />
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => window.location.href = "/api/logout"}
+              className="flex items-center gap-2"
+            >
+              <UserCircle className="h-4 w-4" />
+              <span className="hidden sm:inline">Logout</span>
             </Button>
           </div>
         </div>
