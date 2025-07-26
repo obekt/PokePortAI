@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Download, BarChart3, Eye, Trash2, Grid3X3, List, Loader2, Edit } from "lucide-react";
+import { Download, BarChart3, Eye, Trash2, Grid3X3, List, Loader2, Edit, ExternalLink } from "lucide-react";
 import EditCardDialog from "./EditCardDialog";
 import { useState } from "react";
 import type { Card as CardType } from "@shared/schema";
@@ -59,6 +59,16 @@ export default function PortfolioGrid() {
 
   const uniqueSets = Array.from(new Set(cards.map((card) => card.set)));
   const uniqueConditions = Array.from(new Set(cards.map((card) => card.condition)));
+
+  const generateTCGPlayerURL = (cardName: string, setName: string) => {
+    const encodedName = encodeURIComponent(cardName);
+    return `https://www.tcgplayer.com/search/pokemon/product?productLineName=pokemon&q=${encodedName}&view=grid&productTypeName=Cards`;
+  };
+
+  const generatePokemonOfficialURL = (cardName: string) => {
+    const encodedName = encodeURIComponent(cardName);
+    return `https://www.pokemon.com/us/pokemon-tcg/pokemon-cards`;
+  };
 
   const getConditionColor = (condition: string) => {
     const conditionLower = condition.toLowerCase();
@@ -206,9 +216,14 @@ export default function PortfolioGrid() {
                             Edit
                           </Button>
                         </EditCardDialog>
-                        <Button variant="outline" size="sm" className="flex-1">
-                          <Eye className="mr-1 h-3 w-3" />
-                          View
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="flex-1"
+                          onClick={() => window.open(generateTCGPlayerURL(card.name, card.set), '_blank')}
+                        >
+                          <ExternalLink className="mr-1 h-3 w-3" />
+                          TCGPlayer
                         </Button>
                         <Button 
                           variant="outline" 
@@ -247,8 +262,13 @@ export default function PortfolioGrid() {
                               <Edit className="h-3 w-3" />
                             </Button>
                           </EditCardDialog>
-                          <Button variant="outline" size="sm">
-                            <Eye className="h-3 w-3" />
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => window.open(generateTCGPlayerURL(card.name, card.set), '_blank')}
+                            title="View on TCGPlayer"
+                          >
+                            <ExternalLink className="h-3 w-3" />
                           </Button>
                           <Button 
                             variant="outline" 

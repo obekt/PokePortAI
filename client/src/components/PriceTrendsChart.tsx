@@ -1,7 +1,7 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, TrendingDown, Calendar, DollarSign } from "lucide-react";
+import { TrendingUp, TrendingDown, Calendar, DollarSign, ExternalLink } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 interface PriceHistory {
@@ -62,6 +62,16 @@ export default function PriceTrendsChart({ selectedCard }: PriceTrendsChartProps
   const chartData = selectedCardData 
     ? generatePriceHistory(selectedCardData.averagePrice, selectedCardData.cardName)
     : generatePriceHistory(25, 'Sample Card');
+
+  const generateTCGPlayerURL = (cardName: string) => {
+    const encodedName = encodeURIComponent(cardName);
+    return `https://www.tcgplayer.com/search/pokemon/product?productLineName=pokemon&q=${encodedName}&view=grid&productTypeName=Cards`;
+  };
+
+  const generateEbayURL = (cardName: string) => {
+    const encodedName = encodeURIComponent(cardName + " pokemon card");
+    return `https://www.ebay.com/sch/i.html?_nkw=${encodedName}&_sacat=0&LH_Sold=1&_sop=13`;
+  };
 
   return (
     <div className="space-y-6">
@@ -195,9 +205,25 @@ export default function PriceTrendsChart({ selectedCard }: PriceTrendsChartProps
                   <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm font-medium">
                     #{index + 1}
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <p className="font-medium">{card.cardName}</p>
                     <p className="text-sm text-muted-foreground">{card.set}</p>
+                    <div className="flex space-x-2 mt-1">
+                      <button
+                        onClick={() => window.open(generateTCGPlayerURL(card.cardName), '_blank')}
+                        className="text-xs text-blue-600 hover:text-blue-800 flex items-center"
+                      >
+                        <ExternalLink className="h-3 w-3 mr-1" />
+                        TCGPlayer
+                      </button>
+                      <button
+                        onClick={() => window.open(generateEbayURL(card.cardName), '_blank')}
+                        className="text-xs text-purple-600 hover:text-purple-800 flex items-center"
+                      >
+                        <ExternalLink className="h-3 w-3 mr-1" />
+                        eBay Sold
+                      </button>
+                    </div>
                   </div>
                 </div>
                 <div className="text-right">
@@ -233,9 +259,16 @@ export default function PriceTrendsChart({ selectedCard }: PriceTrendsChartProps
               <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                 <DollarSign className="h-5 w-5 text-blue-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <p className="font-medium">Pokemon TCG API</p>
                 <p className="text-sm text-muted-foreground">Official card database with TCGPlayer pricing</p>
+                <button
+                  onClick={() => window.open('https://pokemontcg.io/', '_blank')}
+                  className="text-xs text-blue-600 hover:text-blue-800 flex items-center mt-1"
+                >
+                  <ExternalLink className="h-3 w-3 mr-1" />
+                  Visit API Docs
+                </button>
               </div>
             </div>
             
@@ -243,9 +276,16 @@ export default function PriceTrendsChart({ selectedCard }: PriceTrendsChartProps
               <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
                 <TrendingUp className="h-5 w-5 text-green-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <p className="font-medium">TCGPlayer</p>
                 <p className="text-sm text-muted-foreground">Market prices from verified sellers</p>
+                <button
+                  onClick={() => window.open('https://www.tcgplayer.com/categories/trading-and-collectible-card-games/pokemon', '_blank')}
+                  className="text-xs text-green-600 hover:text-green-800 flex items-center mt-1"
+                >
+                  <ExternalLink className="h-3 w-3 mr-1" />
+                  Visit TCGPlayer
+                </button>
               </div>
             </div>
             
@@ -253,9 +293,16 @@ export default function PriceTrendsChart({ selectedCard }: PriceTrendsChartProps
               <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
                 <Calendar className="h-5 w-5 text-purple-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <p className="font-medium">eBay Sold Listings</p>
                 <p className="text-sm text-muted-foreground">Recent completed sales data</p>
+                <button
+                  onClick={() => window.open('https://www.ebay.com/sch/i.html?_nkw=pokemon+cards&_sacat=0&LH_Sold=1&_sop=13', '_blank')}
+                  className="text-xs text-purple-600 hover:text-purple-800 flex items-center mt-1"
+                >
+                  <ExternalLink className="h-3 w-3 mr-1" />
+                  View Sold Listings
+                </button>
               </div>
             </div>
           </div>
