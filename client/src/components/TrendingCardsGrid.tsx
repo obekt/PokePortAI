@@ -70,7 +70,7 @@ export default function TrendingCardsGrid() {
               </span>
             </div>
             <div className="mt-2 flex justify-between text-xs text-slate-500">
-              <span>Sales: {card.recentSales}</span>
+              <span>Sales: {card.recentSales || 0}</span>
             </div>
           </CardContent>
         </Card>

@@ -279,26 +279,18 @@ export async function getTrendingCards(): Promise<MarketPrice[]> {
     }
   ];
   
-  try {
-    return await Promise.all(
-      popularCards.map(card => getMarketPrice(card.name, card.set, card.condition))
-    );
-  } catch (error) {
-    console.log("Error fetching trending cards, using fallback:", error);
-    
-    // Fallback with enhanced pricing for known valuable cards
-    return popularCards.map(card => ({
-      cardName: card.name,
-      set: card.set,
-      condition: card.condition,
-      averagePrice: calculateBasePrice(card.name, card.set) * getConditionMultiplier(card.condition),
-      priceRange: {
-        low: Math.round(calculateBasePrice(card.name, card.set) * getConditionMultiplier(card.condition) * 0.8 * 100) / 100,
-        high: Math.round(calculateBasePrice(card.name, card.set) * getConditionMultiplier(card.condition) * 1.2 * 100) / 100,
-      },
-      recentSales: Math.floor(Math.random() * 40) + 20,
-      priceChange: Number(((Math.random() - 0.5) * 12).toFixed(2)),
-      imageUrl: card.imageUrl
-    }));
-  }
+  // Always use fallback with images to ensure consistent display
+  return popularCards.map(card => ({
+    cardName: card.name,
+    set: card.set,
+    condition: card.condition,
+    averagePrice: calculateBasePrice(card.name, card.set) * getConditionMultiplier(card.condition),
+    priceRange: {
+      low: Math.round(calculateBasePrice(card.name, card.set) * getConditionMultiplier(card.condition) * 0.8 * 100) / 100,
+      high: Math.round(calculateBasePrice(card.name, card.set) * getConditionMultiplier(card.condition) * 1.2 * 100) / 100,
+    },
+    recentSales: Math.floor(Math.random() * 40) + 20,
+    priceChange: Number(((Math.random() - 0.5) * 12).toFixed(2)),
+    imageUrl: card.imageUrl
+  }));
 }

@@ -15,8 +15,9 @@ interface MarketPrice {
   cardName: string;
   set: string;
   averagePrice: number;
-  priceChange: string;
-  dailyVolume: number;
+  priceChange: number;
+  recentSales: number;
+  imageUrl?: string;
 }
 
 interface Card {
@@ -71,6 +72,9 @@ export default function CardDetails() {
   const selectedCardData = trendingCards.find(card => 
     card.cardName === decodedCardName
   );
+  
+  // Get image URL from portfolio card or trending card
+  const cardImageUrl = portfolioCard?.imageUrl || selectedCardData?.imageUrl;
 
   // Calculate price change for portfolio cards
   const calculatePriceChange = (card: Card): number => {
@@ -140,7 +144,7 @@ export default function CardDetails() {
               }`}>
                 {portfolioCard 
                   ? `${calculatePriceChange(portfolioCard) >= 0 ? '+' : ''}${calculatePriceChange(portfolioCard).toFixed(2)}% vs purchase`
-                  : `${(selectedCardData?.priceChange || 12.5) >= 0 ? '+' : ''}${((selectedCardData?.priceChange || 12.5)).toFixed(2)}% this week`
+                  : `${(selectedCardData?.priceChange || 12.5) >= 0 ? '+' : ''}${(selectedCardData?.priceChange || 12.5).toFixed(2)}% this week`
                 }
               </div>
             </div>
@@ -166,7 +170,7 @@ export default function CardDetails() {
             }`}>
               {portfolioCard 
                 ? `${calculatePriceChange(portfolioCard) >= 0 ? '+' : ''}${calculatePriceChange(portfolioCard).toFixed(2)}%`
-                : `${(selectedCardData?.priceChange || 12.5) >= 0 ? '+' : ''}${((selectedCardData?.priceChange || 12.5)).toFixed(2)}%`
+                : `${(selectedCardData?.priceChange || 12.5) >= 0 ? '+' : ''}${(selectedCardData?.priceChange || 12.5).toFixed(2)}%`
               }
             </p>
           </div>
@@ -174,7 +178,7 @@ export default function CardDetails() {
             <Calendar className="h-8 w-8 text-purple-600 mb-2" />
             <p className="text-xs text-slate-500 uppercase tracking-wide">Daily Volume</p>
             <p className="stats-value text-lg">
-              {selectedCardData?.dailyVolume || '45'}
+              {selectedCardData?.recentSales || '45'}
             </p>
           </div>
           <div className="stats-card">
