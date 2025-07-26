@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Scan, TrendingUp, ShieldCheck, Camera } from "lucide-react";
+import TradingCardLogo from "@/components/TradingCardLogo";
 
 export default function Landing() {
   return (
@@ -9,9 +10,7 @@ export default function Landing() {
         {/* Header */}
         <div className="text-center mb-16">
           <div className="flex justify-center items-center mb-6">
-            <div className="gradient-primary p-4 rounded-2xl mr-4">
-              <Camera className="h-12 w-12 text-white" />
-            </div>
+            <TradingCardLogo size={64} className="mr-4" />
             <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Poke Port AI
             </h1>

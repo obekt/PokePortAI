@@ -5,6 +5,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useAuth } from "@/hooks/useAuth";
+import TradingCardLogo from "./TradingCardLogo";
 
 interface AppHeaderProps {
   activeSection: string;
@@ -31,9 +32,7 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <div className="gradient-primary p-2 rounded-lg mr-3">
-              <Camera className="h-6 w-6 text-white" />
-            </div>
+            <TradingCardLogo size={32} className="mr-3" />
             <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Poke Port AI
             </h1>
