@@ -71,6 +71,19 @@
 }
 
 @layer components {
+  /* Dialog fixes */
+  [data-radix-popper-content-wrapper] {
+    z-index: 100 !important;
+  }
+  
+  .dialog-overlay {
+    z-index: 50 !important;
+  }
+  
+  .dialog-content {
+    z-index: 51 !important;
+  }
+
   /* Card hover effects */
   .card-glass {
     @apply transform transition-all duration-300 ease-out hover:scale-105 hover:shadow-xl;

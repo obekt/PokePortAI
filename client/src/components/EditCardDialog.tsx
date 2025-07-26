@@ -21,7 +21,8 @@ interface EditCardDialogProps {
 }
 
 const formSchema = updateCardSchema.extend({
-  estimatedValue: z.string().min(1, "Value is required")
+  estimatedValue: z.string().min(1, "Value is required"),
+  purchasePrice: z.string().optional()
 });
 
 export default function EditCardDialog({ card, children }: EditCardDialogProps) {
@@ -37,6 +38,7 @@ export default function EditCardDialog({ card, children }: EditCardDialogProps) 
       cardNumber: card.cardNumber,
       condition: card.condition,
       estimatedValue: card.estimatedValue,
+      purchasePrice: card.purchasePrice || "",
     },
   });
 
@@ -68,11 +70,11 @@ export default function EditCardDialog({ card, children }: EditCardDialogProps) 
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen} modal={true}>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center">
             <Edit className="mr-2 h-4 w-4" />
@@ -173,6 +175,26 @@ export default function EditCardDialog({ card, children }: EditCardDialogProps) 
                 )}
               />
             </div>
+            
+            <FormField
+              control={form.control}
+              name="purchasePrice"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Purchase Price ($) - Optional</FormLabel>
+                  <FormControl>
+                    <Input 
+                      type="number" 
+                      step="0.01" 
+                      min="0" 
+                      placeholder="0.00" 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             
             <div className="flex justify-end space-x-2 pt-4">
               <Button
