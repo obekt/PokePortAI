@@ -38,7 +38,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Scan card with AI recognition
   app.post("/api/cards/scan", upload.single('image'), async (req, res) => {
     try {
+      console.log("Received scan request:");
+      console.log("- req.file:", req.file ? `${req.file.size} bytes, ${req.file.mimetype}` : "null");
+      console.log("- req.body:", req.body);
+      console.log("- Content-Type:", req.headers['content-type']);
+      
       if (!req.file) {
+        console.log("No file received in request");
         return res.status(400).json({ message: "No image provided" });
       }
 
