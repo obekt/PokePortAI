@@ -29,6 +29,8 @@ export const insertCardSchema = createInsertSchema(cards).omit({
   createdAt: true,
 });
 
+export const updateCardSchema = insertCardSchema.partial();
+
 export const insertMarketDataSchema = createInsertSchema(marketData).omit({
   id: true,
   lastUpdated: true,

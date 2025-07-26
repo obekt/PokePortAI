@@ -5,7 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Download, BarChart3, Eye, Trash2, Grid3X3, List, Loader2 } from "lucide-react";
+import { Download, BarChart3, Eye, Trash2, Grid3X3, List, Loader2, Edit } from "lucide-react";
+import EditCardDialog from "./EditCardDialog";
 import { useState } from "react";
 import type { Card as CardType } from "@shared/schema";
 
@@ -16,11 +17,16 @@ export default function PortfolioGrid() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: cards = [], isLoading } = useQuery({
+  const { data: cards = [], isLoading } = useQuery<CardType[]>({
     queryKey: ['/api/cards'],
   });
 
-  const { data: portfolioStats } = useQuery({
+  const { data: portfolioStats } = useQuery<{
+    totalCards: number;
+    totalValue: string;
+    avgValue: string;
+    topCard: string;
+  }>({
     queryKey: ['/api/portfolio/stats'],
   });
 
@@ -45,14 +51,14 @@ export default function PortfolioGrid() {
     },
   });
 
-  const filteredCards = cards.filter((card: CardType) => {
+  const filteredCards = cards.filter((card) => {
     const setMatch = setFilter === "all" || card.set === setFilter;
     const conditionMatch = conditionFilter === "all" || card.condition === conditionFilter;
     return setMatch && conditionMatch;
   });
 
-  const uniqueSets = [...new Set(cards.map((card: CardType) => card.set))];
-  const uniqueConditions = [...new Set(cards.map((card: CardType) => card.condition))];
+  const uniqueSets = Array.from(new Set(cards.map((card) => card.set)));
+  const uniqueConditions = Array.from(new Set(cards.map((card) => card.condition)));
 
   const getConditionColor = (condition: string) => {
     const conditionLower = condition.toLowerCase();
@@ -173,7 +179,7 @@ export default function PortfolioGrid() {
             "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" : 
             "space-y-4"
           }>
-            {filteredCards.map((card: CardType) => (
+            {filteredCards.map((card) => (
               <Card key={card.id} className="hover:shadow-lg transition-shadow">
                 {viewMode === 'grid' ? (
                   <>
@@ -193,7 +199,13 @@ export default function PortfolioGrid() {
                         </Badge>
                         <span className="font-bold text-green-600">${parseFloat(card.estimatedValue).toFixed(2)}</span>
                       </div>
-                      <div className="flex space-x-2">
+                      <div className="flex space-x-1">
+                        <EditCardDialog card={card}>
+                          <Button variant="outline" size="sm" className="flex-1">
+                            <Edit className="mr-1 h-3 w-3" />
+                            Edit
+                          </Button>
+                        </EditCardDialog>
                         <Button variant="outline" size="sm" className="flex-1">
                           <Eye className="mr-1 h-3 w-3" />
                           View
@@ -223,13 +235,18 @@ export default function PortfolioGrid() {
                       <div className="flex-1">
                         <h3 className="font-medium text-gray-900">{card.name}</h3>
                         <p className="text-sm text-gray-600">{card.set} • {card.cardNumber}</p>
-                        <Badge className={getConditionColor(card.condition)} size="sm">
+                        <Badge className={getConditionColor(card.condition)}>
                           {card.condition}
                         </Badge>
                       </div>
                       <div className="text-right">
                         <p className="font-bold text-green-600">${parseFloat(card.estimatedValue).toFixed(2)}</p>
                         <div className="flex space-x-1 mt-2">
+                          <EditCardDialog card={card}>
+                            <Button variant="outline" size="sm">
+                              <Edit className="h-3 w-3" />
+                            </Button>
+                          </EditCardDialog>
                           <Button variant="outline" size="sm">
                             <Eye className="h-3 w-3" />
                           </Button>
