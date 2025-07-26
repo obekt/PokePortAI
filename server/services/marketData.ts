@@ -61,8 +61,19 @@ export async function getMarketPrice(cardName: string, set: string, condition: s
 
 async function fetchPokemonTCGPrice(cardName: string, set: string): Promise<{averagePrice: number, recentSales?: number, priceChange?: number} | null> {
   try {
+    // Add timeout and better error handling
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    
     const searchQuery = encodeURIComponent(`name:"${cardName}"`);
-    const response = await fetch(`https://api.pokemontcg.io/v2/cards?q=${searchQuery}&pageSize=10`);
+    const response = await fetch(`https://api.pokemontcg.io/v2/cards?q=${searchQuery}&pageSize=10`, {
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'PokeScan-Portfolio-App'
+      }
+    });
+    
+    clearTimeout(timeoutId);
     
     if (!response.ok) {
       throw new Error(`Pokemon TCG API error: ${response.status}`);

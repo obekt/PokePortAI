@@ -2,7 +2,7 @@ import { useState } from "react";
 import AppHeader from "@/components/AppHeader";
 import CardScanner from "@/components/CardScanner";
 import PortfolioGrid from "@/components/PortfolioGrid";
-import MarketAnalysis from "@/components/MarketAnalysis";
+import PriceTrendsChart from "@/components/PriceTrendsChart";
 import { Button } from "@/components/ui/button";
 import { Camera, Folder, TrendingUp, Plus } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -41,7 +41,10 @@ export default function Home() {
 
         {/* Market Analysis Section */}
         <section id="market" className="mb-12">
-          <MarketAnalysis />
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-2xl font-medium text-gray-900 mb-6">Market Trends & Analysis</h2>
+            <PriceTrendsChart />
+          </div>
         </section>
       </main>
 

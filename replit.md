@@ -47,10 +47,12 @@ Preferred communication style: Simple, everyday language.
 - **Statistics**: Portfolio value tracking and analytics
 
 ### Market Analysis
-- **Price Tracking**: Current market prices and trends
-- **Price History**: Historical price data visualization
-- **Market Trends**: Trending cards and market insights
-- **External APIs**: Integration with card pricing services
+- **Real-time Charts**: Interactive price trends using Recharts library
+- **Price History**: 6-month historical price visualization with line charts
+- **Trading Volume**: Monthly trading activity with bar charts
+- **Market Overview**: Market cap, daily volume, top gainers dashboard
+- **Data Sources**: Pokemon TCG API, TCGPlayer, and eBay integration
+- **Performance Tracking**: Top performing cards with price change indicators
 
 ### UI/UX Features
 - **Responsive Design**: Mobile-first approach with desktop optimization
@@ -88,19 +90,21 @@ Preferred communication style: Simple, everyday language.
 - **Backend**: Express.js, TypeScript, tsx
 - **Database**: Drizzle ORM, PostgreSQL, Neon serverless
 - **AI Integration**: OpenAI API for image recognition
+- **Charting**: Recharts for market trend visualization
 
 ### Development Tools
 - **Build System**: Vite with React plugin
 - **Code Quality**: TypeScript for type safety
 - **UI Components**: shadcn/ui component library
-- **File Processing**: Multer for image uploads
+- **File Processing**: Multer for image uploads (50MB limit)
 - **Routing**: Wouter for lightweight routing
 
 ### External Services
 - **Database Hosting**: Neon PostgreSQL serverless
-- **AI Vision**: OpenAI GPT-4o for card recognition
-- **Market Data**: Card pricing APIs (TCGPlayer, eBay, etc.)
-- **Image Storage**: File system or cloud storage for card images
+- **AI Vision**: OpenAI GPT-4o for card recognition (60%+ confidence required)
+- **Market Data**: Pokemon TCG API with TCGPlayer pricing integration
+- **Pricing Sources**: TCGPlayer, eBay sold listings, Pokemon TCG API
+- **Image Storage**: File system with automatic compression
 
 ## Deployment Strategy
 
