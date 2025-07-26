@@ -4,55 +4,69 @@ import { Scan, TrendingUp, ShieldCheck, Camera } from "lucide-react";
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-slate-50">
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6">
-            Poke Port AI
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+          <div className="flex justify-center items-center mb-6">
+            <div className="gradient-primary p-4 rounded-2xl mr-4">
+              <Camera className="h-12 w-12 text-white" />
+            </div>
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Poke Port AI
+            </h1>
+          </div>
+          <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto leading-relaxed">
             AI-powered Pokemon card recognition and portfolio management with real-time market analysis
           </p>
           <Button 
             size="lg" 
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg"
+            className="gradient-primary hover:scale-105 transition-transform px-8 py-3 text-lg font-semibold"
             onClick={() => window.location.href = "/api/login"}
           >
             Get Started
           </Button>
+          <p className="text-sm text-slate-500 mt-3">
+            Secure authentication powered by Replit OAuth
+          </p>
         </div>
 
         {/* Features */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          <Card className="text-center">
+          <Card className="collectr-card text-center p-6">
             <CardHeader>
-              <Camera className="w-12 h-12 mx-auto text-blue-600 mb-4" />
-              <CardTitle>AI Card Recognition</CardTitle>
+              <div className="gradient-primary p-3 rounded-xl w-fit mx-auto mb-4">
+                <Camera className="w-8 h-8 text-white" />
+              </div>
+              <CardTitle className="text-slate-800 font-bold">AI Card Recognition</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription>
+              <CardDescription className="text-slate-600">
                 Scan Pokemon cards with AI-powered recognition using your camera or uploaded images
               </CardDescription>
             </CardContent>
           </Card>
 
-          <Card className="text-center">
+          <Card className="collectr-card text-center p-6">
             <CardHeader>
-              <Scan className="w-12 h-12 mx-auto text-green-600 mb-4" />
-              <CardTitle>Portfolio Tracking</CardTitle>
+              <div className="gradient-accent p-3 rounded-xl w-fit mx-auto mb-4">
+                <Scan className="w-8 h-8 text-white" />
+              </div>
+              <CardTitle className="text-slate-800 font-bold">Portfolio Tracking</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription>
+              <CardDescription className="text-slate-600">
                 Track your entire Pokemon card collection with detailed information and valuations
               </CardDescription>
             </CardContent>
           </Card>
 
-          <Card className="text-center">
+          <Card className="collectr-card text-center p-6">
             <CardHeader>
-              <TrendingUp className="w-12 h-12 mx-auto text-purple-600 mb-4" />
-              <CardTitle>Market Analysis</CardTitle>
+              <div className="gradient-secondary p-3 rounded-xl w-fit mx-auto mb-4">
+                <TrendingUp className="w-8 h-8 text-white" />
+              </div>
+              <CardTitle className="text-slate-800 font-bold">Market Analysis</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription>

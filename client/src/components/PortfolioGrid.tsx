@@ -132,22 +132,22 @@ export default function PortfolioGrid({ onCardSelect, selectedCard }: PortfolioG
       </div>
 
       {/* Portfolio Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 border-b border-gray-200">
-        <div className="text-center">
-          <p className="text-2xl font-bold text-primary">{portfolioStats?.totalCards || 0}</p>
-          <p className="text-sm text-gray-600">Total Cards</p>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 border-b border-slate-200/50">
+        <div className="stats-card">
+          <p className="stats-value">{portfolioStats?.totalCards || 0}</p>
+          <p className="text-sm text-slate-500 font-medium mt-1">Total Cards</p>
         </div>
-        <div className="text-center">
-          <p className="text-2xl font-bold text-green-600">${portfolioStats?.totalValue || "0.00"}</p>
-          <p className="text-sm text-gray-600">Portfolio Value</p>
+        <div className="stats-card">
+          <p className="stats-value">${portfolioStats?.totalValue || "0.00"}</p>
+          <p className="text-sm text-slate-500 font-medium mt-1">Portfolio Value</p>
         </div>
-        <div className="text-center">
-          <p className="text-2xl font-bold text-yellow-600">${portfolioStats?.topCard || "0.00"}</p>
-          <p className="text-sm text-gray-600">Most Valuable</p>
+        <div className="stats-card">
+          <p className="stats-value">${portfolioStats?.topCard || "0.00"}</p>
+          <p className="text-sm text-slate-500 font-medium mt-1">Most Valuable</p>
         </div>
-        <div className="text-center">
-          <p className="text-2xl font-bold text-blue-600">${portfolioStats?.avgValue || "0.00"}</p>
-          <p className="text-sm text-gray-600">Average Value</p>
+        <div className="stats-card">
+          <p className="stats-value">${portfolioStats?.avgValue || "0.00"}</p>
+          <p className="text-sm text-slate-500 font-medium mt-1">Average Value</p>
         </div>
       </div>
 
@@ -214,12 +214,19 @@ export default function PortfolioGrid({ onCardSelect, selectedCard }: PortfolioG
             {filteredCards.map((card) => (
               <Card 
                 key={card.id} 
-                className={`hover:shadow-lg transition-all cursor-pointer ${
+                className={`collectr-card cursor-pointer ${
                   selectedCard === card.name 
-                    ? 'ring-2 ring-blue-500 shadow-lg' 
+                    ? 'ring-2 ring-blue-500 shadow-xl scale-105' 
                     : ''
                 }`}
-                onClick={() => onCardSelect?.(card.name)}
+                onClick={() => {
+                  onCardSelect?.(card.name);
+                  // Scroll to market section
+                  const marketSection = document.getElementById('market');
+                  if (marketSection) {
+                    marketSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
               >
                 {viewMode === 'grid' ? (
                   <>
@@ -231,17 +238,19 @@ export default function PortfolioGrid({ onCardSelect, selectedCard }: PortfolioG
                       />
                     )}
                     <CardContent className="p-4">
-                      <h3 className="font-medium text-gray-900 mb-1">{card.name}</h3>
-                      <p className="text-sm text-gray-600 mb-2">{card.set} • {card.cardNumber}</p>
-                      <div className="flex justify-between items-center mb-2">
-                        <Badge className={getConditionColor(card.condition)}>
+                      <h3 className="font-semibold text-slate-800 mb-1 text-sm">{card.name}</h3>
+                      <p className="text-xs text-slate-500 mb-3">{card.set} • {card.cardNumber}</p>
+                      <div className="flex justify-between items-center mb-3">
+                        <Badge className={`${getConditionColor(card.condition)} text-xs font-medium`}>
                           {card.condition}
                         </Badge>
-                        <span className="font-bold text-green-600">${parseFloat(card.estimatedValue).toFixed(2)}</span>
+                        <span className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+                          ${parseFloat(card.estimatedValue).toFixed(2)}
+                        </span>
                       </div>
                       <div className="flex space-x-1">
                         <EditCardDialog card={card}>
-                          <Button variant="outline" size="sm" className="flex-1" onClick={(e) => e.stopPropagation()}>
+                          <Button variant="outline" size="sm" className="flex-1 text-xs border-slate-200 hover:bg-blue-50" onClick={(e) => e.stopPropagation()}>
                             <Edit className="mr-1 h-3 w-3" />
                             Edit
                           </Button>
@@ -249,14 +258,14 @@ export default function PortfolioGrid({ onCardSelect, selectedCard }: PortfolioG
                         <Button 
                           variant="outline" 
                           size="sm" 
-                          className="flex-1"
+                          className="flex-1 text-xs border-slate-200 hover:bg-emerald-50"
                           onClick={(e) => {
                             e.stopPropagation();
                             window.open(generateTCGPlayerURL(card.name, card.set), '_blank');
                           }}
                         >
                           <ExternalLink className="mr-1 h-3 w-3" />
-                          TCGPlayer
+                          TCG
                         </Button>
                         <Button 
                           variant="outline" 
@@ -266,7 +275,7 @@ export default function PortfolioGrid({ onCardSelect, selectedCard }: PortfolioG
                             deleteCardMutation.mutate(card.id);
                           }}
                           disabled={deleteCardMutation.isPending}
-                          className="text-red-600 hover:bg-red-50"
+                          className="text-red-500 hover:bg-red-50 border-red-200"
                         >
                           <Trash2 className="h-3 w-3" />
                         </Button>

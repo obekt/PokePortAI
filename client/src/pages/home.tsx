@@ -23,14 +23,24 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       <AppHeader activeSection={activeSection} onNavigate={scrollToSection} />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-20 md:pb-8">
         {/* Scanner Section */}
         <section id="scanner" className="mb-12">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-2xl font-medium text-gray-900 mb-6">Scan Pokemon Card</h2>
+          <div className="collectr-card p-8 rounded-2xl">
+            <div className="flex items-center mb-6">
+              <div className="gradient-primary p-3 rounded-xl mr-4">
+                <Camera className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+                  Scan Pokemon Card
+                </h2>
+                <p className="text-slate-500 text-sm">AI-powered card recognition with instant market value</p>
+              </div>
+            </div>
             <CardScanner />
           </div>
         </section>
@@ -45,8 +55,18 @@ export default function Home() {
 
         {/* Market Analysis Section */}
         <section id="market" className="mb-12">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-2xl font-medium text-gray-900 mb-6">Market Trends & Analysis</h2>
+          <div className="collectr-card p-8 rounded-2xl">
+            <div className="flex items-center mb-6">
+              <div className="gradient-secondary p-3 rounded-xl mr-4">
+                <TrendingUp className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+                  Market Trends & Analysis
+                </h2>
+                <p className="text-slate-500 text-sm">Real-time pricing and trend analysis for Pokemon cards</p>
+              </div>
+            </div>
             <PriceTrendsChart 
               selectedCard={selectedCard} 
               onCardSelect={setSelectedCard}
@@ -57,14 +77,14 @@ export default function Home() {
 
       {/* Mobile Bottom Navigation */}
       {isMobile && (
-        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40">
+        <nav className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-t border-slate-200 z-40">
           <div className="grid grid-cols-3 h-16">
             <Button
               variant="ghost"
               className={`flex flex-col items-center justify-center h-full rounded-none ${
                 activeSection === 'scanner'
-                  ? 'text-primary border-t-2 border-primary'
-                  : 'text-gray-600'
+                  ? 'text-blue-600 bg-blue-50'
+                  : 'text-slate-600'
               }`}
               onClick={() => scrollToSection('scanner')}
             >
@@ -75,8 +95,8 @@ export default function Home() {
               variant="ghost"
               className={`flex flex-col items-center justify-center h-full rounded-none ${
                 activeSection === 'portfolio'
-                  ? 'text-primary border-t-2 border-primary'
-                  : 'text-gray-600'
+                  ? 'text-blue-600 bg-blue-50'
+                  : 'text-slate-600'
               }`}
               onClick={() => scrollToSection('portfolio')}
             >

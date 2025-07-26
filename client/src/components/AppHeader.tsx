@@ -27,22 +27,26 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
   });
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+    <header className="bg-white/80 backdrop-blur-lg shadow-lg border-b border-slate-200/50 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Camera className="text-primary h-6 w-6 mr-3" />
-            <h1 className="text-xl font-medium text-gray-900">Poke Port AI</h1>
+            <div className="gradient-primary p-2 rounded-lg mr-3">
+              <Camera className="h-6 w-6 text-white" />
+            </div>
+            <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Poke Port AI
+            </h1>
           </div>
           
           {!isMobile && (
-            <nav className="flex space-x-8">
+            <nav className="flex space-x-2">
               <Button
                 variant="ghost"
-                className={`${
+                className={`nav-item ${
                   activeSection === 'scanner'
-                    ? 'text-primary font-medium border-b-2 border-primary pb-1 rounded-none'
-                    : 'text-gray-600 hover:text-primary'
+                    ? 'active bg-blue-50 text-blue-600 font-semibold'
+                    : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50'
                 }`}
                 onClick={() => onNavigate('scanner')}
               >
@@ -50,10 +54,10 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
               </Button>
               <Button
                 variant="ghost"
-                className={`${
+                className={`nav-item ${
                   activeSection === 'portfolio'
-                    ? 'text-primary font-medium border-b-2 border-primary pb-1 rounded-none'
-                    : 'text-gray-600 hover:text-primary'
+                    ? 'active bg-blue-50 text-blue-600 font-semibold'
+                    : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50'
                 }`}
                 onClick={() => onNavigate('portfolio')}
               >
@@ -61,10 +65,10 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
               </Button>
               <Button
                 variant="ghost"
-                className={`${
+                className={`nav-item ${
                   activeSection === 'market'
-                    ? 'text-primary font-medium border-b-2 border-primary pb-1 rounded-none'
-                    : 'text-gray-600 hover:text-primary'
+                    ? 'active bg-blue-50 text-blue-600 font-semibold'
+                    : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50'
                 }`}
                 onClick={() => onNavigate('market')}
               >
@@ -74,24 +78,24 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
           )}
           
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-600 hidden sm:block">
-              Portfolio Value:{" "}
-              <span className="font-medium text-green-600">
+            <div className="hidden sm:block stats-card py-2 px-4">
+              <p className="text-xs text-slate-500 uppercase tracking-wide">Portfolio</p>
+              <p className="stats-value text-lg">
                 ${portfolioStats?.totalValue || "0.00"}
-              </span>
-            </span>
+              </p>
+            </div>
             
             {user && (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3 bg-white/50 rounded-xl px-3 py-2 border border-slate-200">
                 {(user as any).profileImageUrl && (
                   <img 
                     src={(user as any).profileImageUrl} 
                     alt="Profile" 
-                    className="w-8 h-8 rounded-full object-cover"
+                    className="w-8 h-8 rounded-full object-cover ring-2 ring-blue-100"
                   />
                 )}
                 <div className="text-sm hidden sm:block">
-                  <p className="font-medium text-gray-900">
+                  <p className="font-semibold text-slate-800">
                     {(user as any).firstName || (user as any).email?.split('@')[0] || 'User'}
                   </p>
                 </div>
@@ -102,10 +106,10 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
               variant="outline" 
               size="sm" 
               onClick={() => window.location.href = "/api/logout"}
-              className="flex items-center gap-2"
+              className="gradient-secondary border-0 hover:scale-105 transition-transform"
             >
               <LogOut className="h-4 w-4" />
-              <span className="hidden sm:inline">Logout</span>
+              <span className="hidden sm:inline ml-2">Logout</span>
             </Button>
           </div>
         </div>
