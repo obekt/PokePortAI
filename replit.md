@@ -114,6 +114,11 @@ UI/UX Preference: Modern, mobile-first design inspired by Collectr app with clea
 - **Pricing Sources**: TCGPlayer, eBay sold listings, Pokemon TCG API
 - **Image Storage**: File system with automatic compression
 
+## Demo Deployment
+- **Production URL**: https://poke-port-ai.obekt.com/
+- **Repository**: GitHub with comprehensive README
+- **Copyright**: © 2025 ObekT Softworks displayed on all pages
+
 ## Deployment Strategy
 
 ### Development Environment
