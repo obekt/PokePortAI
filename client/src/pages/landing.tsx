@@ -74,13 +74,15 @@ export default function Landing() {
             </CardContent>
           </Card>
 
-          <Card className="text-center">
+          <Card className="collectr-card text-center p-6">
             <CardHeader>
-              <ShieldCheck className="w-12 h-12 mx-auto text-orange-600 mb-4" />
-              <CardTitle>Secure & Private</CardTitle>
+              <div className="gradient-accent p-3 rounded-xl w-fit mx-auto mb-4">
+                <ShieldCheck className="w-8 h-8 text-white" />
+              </div>
+              <CardTitle className="text-slate-800 font-bold">Secure & Private</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription>
+              <CardDescription className="text-slate-600">
                 Your collection data is securely stored and only accessible to you
               </CardDescription>
             </CardContent>
