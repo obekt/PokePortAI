@@ -20,7 +20,7 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
   const { data: portfolioStats } = useQuery<{
     totalCards: number;
     totalValue: string;
-    avgValue: string;
+    priceChange: string;
     topCard: string;
   }>({
     queryKey: ['/api/portfolio/stats'],

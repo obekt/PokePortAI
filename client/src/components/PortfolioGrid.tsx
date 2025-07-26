@@ -45,7 +45,7 @@ export default function PortfolioGrid({ onCardSelect, selectedCard }: PortfolioG
   const { data: portfolioStats } = useQuery<{
     totalCards: number;
     totalValue: string;
-    avgValue: string;
+    priceChange: string;
     topCard: string;
   }>({
     queryKey: ['/api/portfolio/stats'],
@@ -146,8 +146,12 @@ export default function PortfolioGrid({ onCardSelect, selectedCard }: PortfolioG
           <p className="text-sm text-slate-500 font-medium mt-1">Most Valuable</p>
         </div>
         <div className="stats-card">
-          <p className="stats-value">${portfolioStats?.avgValue || "0.00"}</p>
-          <p className="text-sm text-slate-500 font-medium mt-1">Average Value</p>
+          <p className={`stats-value ${
+            parseFloat(portfolioStats?.priceChange || "0") >= 0 ? 'text-emerald-600' : 'text-red-600'
+          }`}>
+            {parseFloat(portfolioStats?.priceChange || "0") >= 0 ? '+' : ''}{portfolioStats?.priceChange || "0.00"}%
+          </p>
+          <p className="text-sm text-slate-500 font-medium mt-1">Price Change</p>
         </div>
       </div>
 

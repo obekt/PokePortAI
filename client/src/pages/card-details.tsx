@@ -102,8 +102,10 @@ export default function CardDetails() {
               <div className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
                 ${selectedCardData?.averagePrice.toFixed(2) || '25.00'}
               </div>
-              <div className="text-emerald-600 font-medium">
-                +{selectedCardData?.priceChange || '12.5'}% this week
+              <div className={`font-medium ${
+                (selectedCardData?.priceChange || 12.5) >= 0 ? 'text-emerald-600' : 'text-red-600'
+              }`}>
+                {(selectedCardData?.priceChange || 12.5) >= 0 ? '+' : ''}{((selectedCardData?.priceChange || 12.5)).toFixed(2)}% this week
               </div>
             </div>
           </div>
@@ -121,8 +123,10 @@ export default function CardDetails() {
           <div className="stats-card">
             <TrendingUp className="h-8 w-8 text-emerald-600 mb-2" />
             <p className="text-xs text-slate-500 uppercase tracking-wide">Weekly Change</p>
-            <p className="stats-value text-lg text-emerald-600">
-              +{selectedCardData?.priceChange || '12.5'}%
+            <p className={`stats-value text-lg ${
+              (selectedCardData?.priceChange || 12.5) >= 0 ? 'text-emerald-600' : 'text-red-600'
+            }`}>
+              {(selectedCardData?.priceChange || 12.5) >= 0 ? '+' : ''}{((selectedCardData?.priceChange || 12.5)).toFixed(2)}%
             </p>
           </div>
           <div className="stats-card">

@@ -33,6 +33,7 @@ export const cards = pgTable("cards", {
   cardNumber: text("card_number").notNull(),
   condition: text("condition").notNull(),
   estimatedValue: decimal("estimated_value", { precision: 10, scale: 2 }).notNull(),
+  purchasePrice: decimal("purchase_price", { precision: 10, scale: 2 }).default("0"),
   imageUrl: text("image_url"),
   recognitionData: jsonb("recognition_data"),
   createdAt: timestamp("created_at").default(sql`now()`).notNull(),

@@ -149,7 +149,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const cards = await storage.getAllCards(userId);
       const totalCards = cards.length;
       const totalValue = cards.reduce((sum, card) => sum + parseFloat(card.estimatedValue), 0);
-      const avgValue = totalCards > 0 ? totalValue / totalCards : 0;
+      const totalAddedValue = cards.reduce((sum, card) => sum + parseFloat(card.purchasePrice || "0"), 0);
+      const priceChange = totalAddedValue > 0 ? ((totalValue - totalAddedValue) / totalAddedValue) * 100 : 0;
       const topCard = cards.reduce((max, card) => 
         parseFloat(card.estimatedValue) > parseFloat(max.estimatedValue) ? card : max,
         cards[0] || { estimatedValue: "0" }
@@ -158,7 +159,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({
         totalCards,
         totalValue: totalValue.toFixed(2),
-        avgValue: avgValue.toFixed(2),
+        priceChange: priceChange.toFixed(2),
         topCard: topCard ? parseFloat(topCard.estimatedValue).toFixed(2) : "0.00"
       });
     } catch (error) {

@@ -48,8 +48,10 @@ export default function TrendingCardsGrid() {
               <span className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
                 ${card.averagePrice.toFixed(2)}
               </span>
-              <span className="text-xs text-emerald-600 font-medium">
-                +{card.priceChange}%
+              <span className={`text-xs font-medium ${
+                card.priceChange >= 0 ? 'text-emerald-600' : 'text-red-600'
+              }`}>
+                {card.priceChange >= 0 ? '+' : ''}{card.priceChange.toFixed(2)}%
               </span>
             </div>
             <div className="mt-2 flex justify-between text-xs text-slate-500">

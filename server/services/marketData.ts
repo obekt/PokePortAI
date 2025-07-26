@@ -33,7 +33,7 @@ export async function getMarketPrice(cardName: string, set: string, condition: s
           high: Math.round(averagePrice * 1.15 * 100) / 100,
         },
         recentSales: tcgPrice.recentSales || Math.floor(Math.random() * 30) + 15,
-        priceChange: tcgPrice.priceChange || (Math.random() - 0.5) * 15,
+        priceChange: Number((tcgPrice.priceChange || (Math.random() - 0.5) * 15).toFixed(2)),
       };
     }
   } catch (error) {
@@ -55,7 +55,7 @@ export async function getMarketPrice(cardName: string, set: string, condition: s
       high: Math.round(averagePrice * 1.2 * 100) / 100,
     },
     recentSales: Math.floor(Math.random() * 40) + 20,
-    priceChange: (Math.random() - 0.5) * 12,
+    priceChange: Number(((Math.random() - 0.5) * 12).toFixed(2)),
   };
 }
 
@@ -110,7 +110,7 @@ async function fetchPokemonTCGPrice(cardName: string, set: string): Promise<{ave
           return {
             averagePrice: avgPrice / priceCount,
             recentSales: Math.floor(Math.random() * 25) + 20,
-            priceChange: (Math.random() - 0.5) * 10
+            priceChange: Number(((Math.random() - 0.5) * 10).toFixed(2))
           };
         }
       }
@@ -190,7 +190,7 @@ export async function getTrendingCards(): Promise<MarketPrice[]> {
         high: Math.round(calculateBasePrice(card.name, card.set) * getConditionMultiplier(card.condition) * 1.2 * 100) / 100,
       },
       recentSales: Math.floor(Math.random() * 40) + 20,
-      priceChange: (Math.random() - 0.5) * 12,
+      priceChange: Number(((Math.random() - 0.5) * 12).toFixed(2)),
     }));
   }
 }
