@@ -26,9 +26,10 @@ interface MarketPrice {
 
 interface PriceTrendsChartProps {
   selectedCard?: string;
+  onCardSelect?: (cardName: string) => void;
 }
 
-export default function PriceTrendsChart({ selectedCard }: PriceTrendsChartProps) {
+export default function PriceTrendsChart({ selectedCard, onCardSelect }: PriceTrendsChartProps) {
   const { data: trendingCards = [] } = useQuery<MarketPrice[]>({
     queryKey: ['/api/market/trends'],
   });
@@ -135,7 +136,7 @@ export default function PriceTrendsChart({ selectedCard }: PriceTrendsChartProps
         <CardHeader>
           <CardTitle>Price Trends</CardTitle>
           <CardDescription>
-            {selectedCard ? `Price history for ${selectedCard}` : 'Select a card to view price trends'}
+            {selectedCard ? `Price history for ${selectedCard}` : 'Click on any card below to view its price trends'}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -200,7 +201,15 @@ export default function PriceTrendsChart({ selectedCard }: PriceTrendsChartProps
         <CardContent>
           <div className="space-y-4">
             {trendingCards.slice(0, 6).map((card, index) => (
-              <div key={index} className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+              <div 
+                key={index} 
+                className={`flex items-center justify-between p-3 border rounded-lg transition-colors cursor-pointer ${
+                  selectedCard === card.cardName 
+                    ? 'bg-blue-50 border-blue-200 ring-1 ring-blue-200' 
+                    : 'hover:bg-muted/50'
+                }`}
+                onClick={() => onCardSelect?.(card.cardName)}
+              >
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm font-medium">
                     #{index + 1}

@@ -9,6 +9,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState<'scanner' | 'portfolio' | 'market'>('scanner');
+  const [selectedCard, setSelectedCard] = useState<string>('');
   const isMobile = useIsMobile();
 
   const scrollToSection = (sectionId: string) => {
@@ -43,7 +44,10 @@ export default function Home() {
         <section id="market" className="mb-12">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h2 className="text-2xl font-medium text-gray-900 mb-6">Market Trends & Analysis</h2>
-            <PriceTrendsChart />
+            <PriceTrendsChart 
+              selectedCard={selectedCard} 
+              onCardSelect={setSelectedCard}
+            />
           </div>
         </section>
       </main>
