@@ -17,7 +17,15 @@ export default function Landing() {
           <Button 
             size="lg" 
             className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg"
-            onClick={() => window.location.href = "/api/login"}
+            onClick={() => {
+              console.log("Redirecting to login...");
+              try {
+                window.location.href = "/api/login";
+              } catch (error) {
+                console.error("Login redirect failed:", error);
+                alert("Login redirect failed. Please try refreshing the page.");
+              }
+            }}
           >
             Get Started
           </Button>
