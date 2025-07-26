@@ -43,17 +43,16 @@ export default function TrendingCardsGrid() {
           onClick={() => setLocation(`/card/${encodeURIComponent(card.cardName)}`)}
         >
           {card.imageUrl && (
-            <div className="relative overflow-hidden rounded-t-lg">
+            <div className="relative overflow-hidden rounded-t-lg bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center p-2">
               <img
                 src={card.imageUrl}
                 alt={`${card.cardName} Pokemon card`}
-                className="w-full h-32 object-cover hover:scale-105 transition-transform duration-200"
+                className="w-full h-36 object-contain hover:scale-105 transition-transform duration-200"
                 onError={(e) => {
                   // Hide image container if image fails to load
                   e.currentTarget.parentElement!.style.display = 'none';
                 }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
           )}
           <CardContent className="p-4">

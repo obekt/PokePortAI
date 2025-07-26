@@ -123,15 +123,38 @@ export default function CardDetails() {
         {/* Card Info Header */}
         <div className="card-glass p-8 rounded-2xl mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
-                {decodedCardName}
-              </h1>
-              {(portfolioCard || selectedCardData) && (
-                <p className="text-slate-500 text-lg mt-2">
-                  {portfolioCard ? `${portfolioCard.set} • ${portfolioCard.condition}` : selectedCardData?.set}
-                </p>
+            <div className="flex items-center">
+              {cardImageUrl && (
+                <div className="w-24 h-36 mr-6 rounded-lg overflow-hidden shadow-md bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center p-1">
+                  <img
+                    src={cardImageUrl}
+                    alt={`${decodedCardName} Pokemon card`}
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      // Fallback to placeholder if image fails
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const fallback = target.nextElementSibling as HTMLElement;
+                      if (fallback) fallback.style.display = 'flex';
+                    }}
+                  />
+                  <div className="w-24 h-36 bg-gradient-to-br from-blue-400 to-purple-600 rounded-lg flex items-center justify-center" style={{display: 'none'}}>
+                    <span className="text-white text-xl font-bold">
+                      {decodedCardName.charAt(0)}
+                    </span>
+                  </div>
+                </div>
               )}
+              <div>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+                  {decodedCardName}
+                </h1>
+                {(portfolioCard || selectedCardData) && (
+                  <p className="text-slate-500 text-lg mt-2">
+                    {portfolioCard ? `${portfolioCard.set} • ${portfolioCard.condition}` : selectedCardData?.set}
+                  </p>
+                )}
+              </div>
             </div>
             <div className="mt-4 md:mt-0 text-right">
               <div className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
