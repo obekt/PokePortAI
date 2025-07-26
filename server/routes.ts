@@ -4,8 +4,7 @@ import { storage } from "./storage";
 import { insertCardSchema, updateCardSchema } from "@shared/schema";
 import { recognizeCard } from "./services/openai";
 import { getMarketPrice, getTrendingCards } from "./services/marketData";
-// import { setupAuth, isAuthenticated } from "./replitAuth";
-import { setupSimpleAuth, isAuthenticated } from "./simpleAuth";
+import { setupAuth, isAuthenticated } from "./replitAuth";
 import multer from "multer";
 
 const upload = multer({ 
@@ -14,10 +13,20 @@ const upload = multer({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Auth middleware - using simple auth for now to avoid Firefox crashes
-  setupSimpleAuth(app);
+  // Auth middleware
+  await setupAuth(app);
 
-  // Note: Auth routes are now handled in simpleAuth.ts
+  // Auth routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
 
   // Get all cards
   app.get("/api/cards", isAuthenticated, async (req: any, res) => {
@@ -86,10 +95,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/cards", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
+      console.log("Creating card for user:", userId);
+      console.log("Request body:", JSON.stringify(req.body, null, 2));
+      
       const validatedData = insertCardSchema.parse(req.body);
+      console.log("Validated data:", JSON.stringify(validatedData, null, 2));
+      
       const card = await storage.createCard(userId, validatedData);
       res.status(201).json(card);
     } catch (error) {
+      console.error("Card creation error:", error);
       res.status(400).json({ 
         message: "Invalid card data",
         error: (error as Error).message 
