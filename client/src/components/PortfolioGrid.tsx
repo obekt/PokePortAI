@@ -11,7 +11,12 @@ import EditCardDialog from "./EditCardDialog";
 import { useState, useEffect } from "react";
 import type { Card as CardType } from "@shared/schema";
 
-export default function PortfolioGrid() {
+interface PortfolioGridProps {
+  onCardSelect?: (cardName: string) => void;
+  selectedCard?: string;
+}
+
+export default function PortfolioGrid({ onCardSelect, selectedCard }: PortfolioGridProps = {}) {
   const [setFilter, setSetFilter] = useState<string>("all");
   const [conditionFilter, setConditionFilter] = useState<string>("all");
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -207,7 +212,15 @@ export default function PortfolioGrid() {
             "space-y-4"
           }>
             {filteredCards.map((card) => (
-              <Card key={card.id} className="hover:shadow-lg transition-shadow">
+              <Card 
+                key={card.id} 
+                className={`hover:shadow-lg transition-all cursor-pointer ${
+                  selectedCard === card.name 
+                    ? 'ring-2 ring-blue-500 shadow-lg' 
+                    : ''
+                }`}
+                onClick={() => onCardSelect?.(card.name)}
+              >
                 {viewMode === 'grid' ? (
                   <>
                     {card.imageUrl && (
@@ -228,7 +241,7 @@ export default function PortfolioGrid() {
                       </div>
                       <div className="flex space-x-1">
                         <EditCardDialog card={card}>
-                          <Button variant="outline" size="sm" className="flex-1">
+                          <Button variant="outline" size="sm" className="flex-1" onClick={(e) => e.stopPropagation()}>
                             <Edit className="mr-1 h-3 w-3" />
                             Edit
                           </Button>
@@ -237,7 +250,10 @@ export default function PortfolioGrid() {
                           variant="outline" 
                           size="sm" 
                           className="flex-1"
-                          onClick={() => window.open(generateTCGPlayerURL(card.name, card.set), '_blank')}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(generateTCGPlayerURL(card.name, card.set), '_blank');
+                          }}
                         >
                           <ExternalLink className="mr-1 h-3 w-3" />
                           TCGPlayer
@@ -245,7 +261,10 @@ export default function PortfolioGrid() {
                         <Button 
                           variant="outline" 
                           size="sm"
-                          onClick={() => deleteCardMutation.mutate(card.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteCardMutation.mutate(card.id);
+                          }}
                           disabled={deleteCardMutation.isPending}
                           className="text-red-600 hover:bg-red-50"
                         >

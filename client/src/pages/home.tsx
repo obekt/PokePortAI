@@ -37,7 +37,10 @@ export default function Home() {
 
         {/* Portfolio Section */}
         <section id="portfolio" className="mb-12">
-          <PortfolioGrid />
+          <PortfolioGrid 
+            selectedCard={selectedCard}
+            onCardSelect={setSelectedCard}
+          />
         </section>
 
         {/* Market Analysis Section */}

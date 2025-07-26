@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Camera, UserCircle } from "lucide-react";
+import { Camera, UserCircle, LogOut } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
+import { useAuth } from "@/hooks/useAuth";
 
 interface AppHeaderProps {
   activeSection: string;
@@ -12,7 +13,7 @@ interface AppHeaderProps {
 
 export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps) {
   const isMobile = useIsMobile();
-
+  const { user } = useAuth();
   const { toast } = useToast();
   
   const { data: portfolioStats } = useQuery<{
@@ -79,13 +80,31 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
                 ${portfolioStats?.totalValue || "0.00"}
               </span>
             </span>
+            
+            {user && (
+              <div className="flex items-center space-x-2">
+                {(user as any).profileImageUrl && (
+                  <img 
+                    src={(user as any).profileImageUrl} 
+                    alt="Profile" 
+                    className="w-8 h-8 rounded-full object-cover"
+                  />
+                )}
+                <div className="text-sm hidden sm:block">
+                  <p className="font-medium text-gray-900">
+                    {(user as any).firstName || (user as any).email?.split('@')[0] || 'User'}
+                  </p>
+                </div>
+              </div>
+            )}
+            
             <Button 
               variant="outline" 
               size="sm" 
               onClick={() => window.location.href = "/api/logout"}
               className="flex items-center gap-2"
             >
-              <UserCircle className="h-4 w-4" />
+              <LogOut className="h-4 w-4" />
               <span className="hidden sm:inline">Logout</span>
             </Button>
           </div>
