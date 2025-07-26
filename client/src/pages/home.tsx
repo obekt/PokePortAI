@@ -2,7 +2,7 @@ import { useState } from "react";
 import AppHeader from "@/components/AppHeader";
 import CardScanner from "@/components/CardScanner";
 import PortfolioGrid from "@/components/PortfolioGrid";
-import PriceTrendsChart from "@/components/PriceTrendsChart";
+import TrendingCardsGrid from "@/components/TrendingCardsGrid";
 import { Button } from "@/components/ui/button";
 import { Camera, Folder, TrendingUp, Plus } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -53,7 +53,7 @@ export default function Home() {
           />
         </section>
 
-        {/* Market Analysis Section */}
+        {/* Market Overview Section */}
         <section id="market" className="mb-12">
           <div className="collectr-card p-8 rounded-2xl">
             <div className="flex items-center mb-6">
@@ -62,15 +62,12 @@ export default function Home() {
               </div>
               <div>
                 <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
-                  Market Trends & Analysis
+                  Top Trending Cards
                 </h2>
-                <p className="text-slate-500 text-sm">Real-time pricing and trend analysis for Pokemon cards</p>
+                <p className="text-slate-500 text-sm">Click any card to view detailed analytics and price history</p>
               </div>
             </div>
-            <PriceTrendsChart 
-              selectedCard={selectedCard} 
-              onCardSelect={setSelectedCard}
-            />
+            <TrendingCardsGrid />
           </div>
         </section>
       </main>

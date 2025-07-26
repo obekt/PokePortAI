@@ -220,12 +220,8 @@ export default function PortfolioGrid({ onCardSelect, selectedCard }: PortfolioG
                     : ''
                 }`}
                 onClick={() => {
-                  onCardSelect?.(card.name);
-                  // Scroll to market section
-                  const marketSection = document.getElementById('market');
-                  if (marketSection) {
-                    marketSection.scrollIntoView({ behavior: 'smooth' });
-                  }
+                  // Navigate to card details page
+                  window.location.href = `/card/${encodeURIComponent(card.name)}`;
                 }}
               >
                 {viewMode === 'grid' ? (

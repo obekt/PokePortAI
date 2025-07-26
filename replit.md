@@ -7,6 +7,7 @@ Poke Port AI is a full-stack web application that allows users to scan Pokemon c
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+UI/UX Preference: Modern, mobile-first design inspired by Collectr app with clean card-based layouts and intuitive navigation.
 
 ## System Architecture
 
@@ -56,11 +57,11 @@ Preferred communication style: Simple, everyday language.
 - **Performance Tracking**: Top performing cards with price change indicators
 
 ### UI/UX Features
-- **Responsive Design**: Mobile-first approach with desktop optimization
-- **Component Library**: Consistent design system using shadcn/ui
-- **Toast Notifications**: User feedback for actions
-- **Loading States**: Proper loading and error handling
-- **Mobile Navigation**: Bottom navigation for mobile devices
+- **Modern Collectr-inspired Design**: Blue/purple gradients, glassmorphism effects, hover animations
+- **Card-based Navigation**: Click portfolio or trending cards to view detailed analytics
+- **Dedicated Card Details Page**: Separate page with comprehensive price charts and market data
+- **Mobile-optimized**: Bottom navigation, responsive grid layouts, touch-friendly interactions
+- **Component Library**: Consistent design system using shadcn/ui with custom Collectr styling
 
 ## Data Flow
 
@@ -75,13 +76,19 @@ Preferred communication style: Simple, everyday language.
    - Cards retrieved from database
    - Client-side filtering and sorting
    - Real-time updates using React Query
+   - Click card → Navigate to dedicated card details page
    - CRUD operations through REST API
 
 3. **Market Data Flow**:
    - External API integration for pricing data
-   - Cached market data in database
-   - Periodic updates for price trends
-   - Real-time display in UI components
+   - Trending cards displayed on home page
+   - Click card → Navigate to detailed analytics page
+   - Comprehensive charts and market data on card details page
+
+4. **Navigation Flow**:
+   - Home page: Scanner, Portfolio, Trending Cards
+   - Card Details page: Full analytics, price history, volume charts
+   - Mobile-optimized routing with smooth transitions
 
 ## External Dependencies
 
