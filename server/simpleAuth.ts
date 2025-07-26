@@ -1,19 +1,75 @@
 import type { Express, RequestHandler } from "express";
 
-// Simple authentication bypass for development
+// Simple authentication with login form for development
 export function setupSimpleAuth(app: Express) {
-  // Simple login route that sets a basic session
+  // Show login form
   app.get("/api/login", (req, res) => {
-    // For now, create a simple mock user session
+    const loginForm = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Login - Poke Port AI</title>
+        <style>
+          body { font-family: Arial, sans-serif; max-width: 400px; margin: 100px auto; padding: 20px; }
+          .form-group { margin-bottom: 15px; }
+          label { display: block; margin-bottom: 5px; }
+          input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+          button { background: #3b82f6; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+          button:hover { background: #2563eb; }
+          .header { text-align: center; margin-bottom: 30px; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>Poke Port AI</h1>
+          <p>Sign in to manage your Pokemon card portfolio</p>
+        </div>
+        <form method="POST" action="/api/login">
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <button type="submit">Sign In</button>
+        </form>
+      </body>
+      </html>
+    `;
+    res.send(loginForm);
+  });
+
+  // Handle login form submission
+  app.post("/api/login", async (req, res) => {
+    const { email, name } = req.body;
+    const userId = `user-${Date.now()}`;
+    
+    // Store user in session
     (req as any).session.user = {
-      id: "test-user-123",
-      email: "test@example.com",
-      firstName: "Test",
-      lastName: "User",
+      id: userId,
+      email: email || "user@example.com",
+      firstName: name || "User",
+      lastName: "",
       profileImageUrl: null
     };
     
-    console.log("Simple auth: user logged in");
+    // Also create user in database for data persistence
+    try {
+      const { storage } = await import("./storage");
+      await storage.upsertUser({
+        id: userId,
+        email: email || "user@example.com",
+        firstName: name || "User",
+        lastName: "",
+        profileImageUrl: null
+      });
+    } catch (error) {
+      console.log("Note: Could not create user in database:", error);
+    }
+    
+    console.log("Simple auth: user logged in as", email);
     res.redirect("/");
   });
 
