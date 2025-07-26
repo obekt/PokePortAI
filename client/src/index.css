@@ -72,16 +72,22 @@
 
 @layer components {
   /* Dialog fixes */
-  [data-radix-popper-content-wrapper] {
-    z-index: 100 !important;
+  [data-radix-dialog-overlay] {
+    z-index: 9998 !important;
+    background-color: rgba(0, 0, 0, 0.8) !important;
+  }
+  
+  [data-radix-dialog-content] {
+    z-index: 9999 !important;
+    background-color: white !important;
   }
   
   .dialog-overlay {
-    z-index: 50 !important;
+    z-index: 9998 !important;
   }
   
   .dialog-content {
-    z-index: 51 !important;
+    z-index: 9999 !important;
   }
 
   /* Card hover effects */

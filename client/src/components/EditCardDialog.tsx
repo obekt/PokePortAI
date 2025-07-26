@@ -74,7 +74,10 @@ export default function EditCardDialog({ card, children }: EditCardDialogProps) 
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto">
+      <DialogContent 
+        className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         <DialogHeader>
           <DialogTitle className="flex items-center">
             <Edit className="mr-2 h-4 w-4" />
