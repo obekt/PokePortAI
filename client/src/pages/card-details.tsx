@@ -19,11 +19,27 @@ interface MarketPrice {
   dailyVolume: number;
 }
 
+interface Card {
+  id: string;
+  name: string;
+  set: string;
+  cardNumber: string;
+  condition: string;
+  estimatedValue: string;
+  purchasePrice?: string;
+  imageUrl?: string;
+}
+
 export default function CardDetails() {
   const { cardName } = useParams<{ cardName: string }>();
   const [, setLocation] = useLocation();
   
   const decodedCardName = cardName ? decodeURIComponent(cardName) : '';
+
+  const { data: portfolioCards = [] } = useQuery<Card[]>({
+    queryKey: ['/api/cards'],
+    retry: false,
+  });
 
   const { data: priceHistory = [] } = useQuery<PriceHistory[]>({
     queryKey: ['/api/market/price-history', decodedCardName],
@@ -50,13 +66,26 @@ export default function CardDetails() {
     });
   };
 
+  // Find the card in portfolio first, then fall back to trending cards
+  const portfolioCard = portfolioCards.find(card => card.name === decodedCardName);
   const selectedCardData = trendingCards.find(card => 
     card.cardName === decodedCardName
   );
 
-  const chartData = selectedCardData 
-    ? generatePriceHistory(selectedCardData.averagePrice, selectedCardData.cardName)
-    : generatePriceHistory(25, decodedCardName);
+  // Calculate price change for portfolio cards
+  const calculatePriceChange = (card: Card): number => {
+    if (!card.purchasePrice) return 0;
+    const current = parseFloat(card.estimatedValue);
+    const purchase = parseFloat(card.purchasePrice);
+    if (purchase === 0) return 0;
+    return ((current - purchase) / purchase) * 100;
+  };
+
+  const chartData = portfolioCard 
+    ? generatePriceHistory(parseFloat(portfolioCard.estimatedValue), portfolioCard.name)
+    : selectedCardData 
+      ? generatePriceHistory(selectedCardData.averagePrice, selectedCardData.cardName)
+      : generatePriceHistory(25, decodedCardName);
 
   const generateTCGPlayerURL = (cardName: string) => {
     const encodedName = encodeURIComponent(cardName);
@@ -94,18 +123,25 @@ export default function CardDetails() {
               <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
                 {decodedCardName}
               </h1>
-              {selectedCardData && (
-                <p className="text-slate-500 text-lg mt-2">{selectedCardData.set}</p>
+              {(portfolioCard || selectedCardData) && (
+                <p className="text-slate-500 text-lg mt-2">
+                  {portfolioCard ? `${portfolioCard.set} • ${portfolioCard.condition}` : selectedCardData?.set}
+                </p>
               )}
             </div>
             <div className="mt-4 md:mt-0 text-right">
               <div className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                ${selectedCardData?.averagePrice.toFixed(2) || '25.00'}
+                ${portfolioCard ? parseFloat(portfolioCard.estimatedValue).toFixed(2) : selectedCardData?.averagePrice.toFixed(2) || '25.00'}
               </div>
               <div className={`font-medium ${
-                (selectedCardData?.priceChange || 12.5) >= 0 ? 'text-emerald-600' : 'text-red-600'
+                portfolioCard 
+                  ? (calculatePriceChange(portfolioCard) >= 0 ? 'text-emerald-600' : 'text-red-600')
+                  : ((selectedCardData?.priceChange || 12.5) >= 0 ? 'text-emerald-600' : 'text-red-600')
               }`}>
-                {(selectedCardData?.priceChange || 12.5) >= 0 ? '+' : ''}{((selectedCardData?.priceChange || 12.5)).toFixed(2)}% this week
+                {portfolioCard 
+                  ? `${calculatePriceChange(portfolioCard) >= 0 ? '+' : ''}${calculatePriceChange(portfolioCard).toFixed(2)}% vs purchase`
+                  : `${(selectedCardData?.priceChange || 12.5) >= 0 ? '+' : ''}${((selectedCardData?.priceChange || 12.5)).toFixed(2)}% this week`
+                }
               </div>
             </div>
           </div>
@@ -117,16 +153,21 @@ export default function CardDetails() {
             <DollarSign className="h-8 w-8 text-blue-600 mb-2" />
             <p className="text-xs text-slate-500 uppercase tracking-wide">Current Price</p>
             <p className="stats-value text-lg">
-              ${selectedCardData?.averagePrice.toFixed(2) || '25.00'}
+              ${portfolioCard ? parseFloat(portfolioCard.estimatedValue).toFixed(2) : selectedCardData?.averagePrice.toFixed(2) || '25.00'}
             </p>
           </div>
           <div className="stats-card">
             <TrendingUp className="h-8 w-8 text-emerald-600 mb-2" />
             <p className="text-xs text-slate-500 uppercase tracking-wide">Weekly Change</p>
             <p className={`stats-value text-lg ${
-              (selectedCardData?.priceChange || 12.5) >= 0 ? 'text-emerald-600' : 'text-red-600'
+              portfolioCard 
+                ? (calculatePriceChange(portfolioCard) >= 0 ? 'text-emerald-600' : 'text-red-600')
+                : ((selectedCardData?.priceChange || 12.5) >= 0 ? 'text-emerald-600' : 'text-red-600')
             }`}>
-              {(selectedCardData?.priceChange || 12.5) >= 0 ? '+' : ''}{((selectedCardData?.priceChange || 12.5)).toFixed(2)}%
+              {portfolioCard 
+                ? `${calculatePriceChange(portfolioCard) >= 0 ? '+' : ''}${calculatePriceChange(portfolioCard).toFixed(2)}%`
+                : `${(selectedCardData?.priceChange || 12.5) >= 0 ? '+' : ''}${((selectedCardData?.priceChange || 12.5)).toFixed(2)}%`
+              }
             </p>
           </div>
           <div className="stats-card">
