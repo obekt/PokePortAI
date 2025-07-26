@@ -34,6 +34,7 @@ export default function CardScanner() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
+  const [isCameraStarting, setIsCameraStarting] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -94,17 +95,44 @@ export default function CardScanner() {
 
   const startCamera = async () => {
     try {
+      console.log("Starting camera...");
+      setIsCameraStarting(true);
+      
+      // Check if navigator.mediaDevices is available
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error("Camera not supported by this browser");
+      }
+      
       const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { facingMode: 'environment' } 
+        video: { 
+          facingMode: 'environment',
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        } 
       });
+      
+      console.log("Camera stream obtained:", stream);
+      
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         setIsCameraActive(true);
+        setIsCameraStarting(false);
+        console.log("Camera activated, isCameraActive set to true");
+        
+        // Wait for video to load
+        videoRef.current.onloadedmetadata = () => {
+          console.log("Video metadata loaded");
+        };
+      } else {
+        console.error("Video ref is null");
+        setIsCameraStarting(false);
       }
     } catch (error) {
+      console.error("Camera error:", error);
+      setIsCameraStarting(false);
       toast({
-        title: "Camera access denied",
-        description: "Please allow camera access to scan cards.",
+        title: "Camera access failed",
+        description: `${(error as Error).message}. Please allow camera access or try uploading an image instead.`,
         variant: "destructive",
       });
     }
@@ -159,7 +187,15 @@ export default function CardScanner() {
     <div className="grid lg:grid-cols-2 gap-8">
       {/* Camera/Upload Interface */}
       <div className="space-y-6">
-        {!isCameraActive ? (
+        {isCameraStarting ? (
+          <Card>
+            <CardContent className="p-6 text-center">
+              <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
+              <p className="font-medium text-gray-900 mb-2">Starting Camera...</p>
+              <p className="text-sm text-gray-600">Please allow camera access when prompted</p>
+            </CardContent>
+          </Card>
+        ) : !isCameraActive ? (
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-primary transition-colors bg-gray-50">
             <div className="mb-4">
               <Camera className="h-16 w-16 text-gray-400 mx-auto mb-4" />
