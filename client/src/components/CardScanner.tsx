@@ -190,11 +190,27 @@ export default function CardScanner() {
       console.log("Blob created:", blob);
       if (blob) {
         console.log("Blob size:", blob.size, "bytes");
-        const formData = new FormData();
-        formData.append('image', blob, 'capture.jpg');
-        console.log("Sending image to server...");
-        scanMutation.mutate(formData);
-        stopCamera();
+        
+        // Check if image is too large and compress if needed
+        if (blob.size > 2 * 1024 * 1024) { // 2MB threshold
+          console.log("Image too large, compressing...");
+          canvas.toBlob((compressedBlob) => {
+            if (compressedBlob) {
+              console.log("Compressed blob size:", compressedBlob.size, "bytes");
+              const formData = new FormData();
+              formData.append('image', compressedBlob, 'capture.jpg');
+              console.log("Sending compressed image to server...");
+              scanMutation.mutate(formData);
+              stopCamera();
+            }
+          }, 'image/jpeg', 0.6); // More compression
+        } else {
+          const formData = new FormData();
+          formData.append('image', blob, 'capture.jpg');
+          console.log("Sending image to server...");
+          scanMutation.mutate(formData);
+          stopCamera();
+        }
       } else {
         console.error("Failed to create blob from canvas");
         toast({
