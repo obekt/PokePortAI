@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "wouter";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { Download, BarChart3, Eye, Trash2, Grid3X3, List, Loader2, Edit, ExternalLink } from "lucide-react";
 import EditCardDialog from "./EditCardDialog";
@@ -22,6 +23,7 @@ export default function PortfolioGrid({ onCardSelect, selectedCard }: PortfolioG
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [, setLocation] = useLocation();
 
   // Handle authentication errors globally for this component
   const handleAuthError = (error: Error) => {
@@ -224,8 +226,8 @@ export default function PortfolioGrid({ onCardSelect, selectedCard }: PortfolioG
                     : ''
                 }`}
                 onClick={() => {
-                  // Navigate to card details page
-                  window.location.href = `/card/${encodeURIComponent(card.name)}`;
+                  // Navigate to card details page using client-side routing
+                  setLocation(`/card/${encodeURIComponent(card.name)}`);
                 }}
               >
                 {viewMode === 'grid' ? (
