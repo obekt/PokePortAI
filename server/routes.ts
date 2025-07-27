@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertCardSchema, updateCardSchema } from "@shared/schema";
+import { insertCardSchema, updateCardSchema, insertUserProfileSchema, insertCommentSchema } from "@shared/schema";
 import { recognizeCard } from "./services/openai";
 import { getMarketPrice, getTrendingCards } from "./services/marketData";
 import { setupAuth, isAuthenticated } from "./replitAuth";
@@ -197,6 +197,147 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(marketPrice);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch market data" });
+    }
+  });
+
+  // Social features API endpoints
+
+  // Get user profile
+  app.get("/api/profile/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const profile = await storage.getUserProfile(userId);
+      if (!profile) {
+        return res.status(404).json({ message: "Profile not found" });
+      }
+      res.json(profile);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch profile" });
+    }
+  });
+
+  // Update user profile
+  app.put("/api/profile", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const validatedData = insertUserProfileSchema.parse(req.body);
+      const profile = await storage.upsertUserProfile(userId, validatedData);
+      res.json(profile);
+    } catch (error) {
+      res.status(400).json({ message: "Invalid profile data" });
+    }
+  });
+
+  // Get public portfolios (community feed)
+  app.get("/api/community/portfolios", async (req, res) => {
+    try {
+      const limit = parseInt(req.query.limit as string) || 20;
+      const publicProfiles = await storage.getPublicProfiles(limit);
+      res.json(publicProfiles);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch public portfolios" });
+    }
+  });
+
+  // Get portfolio details with cards (for viewing public portfolios)
+  app.get("/api/portfolio/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const viewerUserId = (req as any).user?.claims?.sub;
+
+      // Check if portfolio is public
+      const profile = await storage.getUserProfile(userId);
+      if (!profile?.isPublic) {
+        return res.status(403).json({ message: "Portfolio is private" });
+      }
+
+      // Increment view count if different user
+      if (viewerUserId && viewerUserId !== userId) {
+        await storage.incrementPortfolioViews(userId);
+      }
+
+      const [cards, user, comments, isLiked] = await Promise.all([
+        storage.getAllCards(userId),
+        storage.getUser(userId),
+        storage.getPortfolioComments(userId),
+        viewerUserId ? storage.isLikedByUser(userId, viewerUserId) : false,
+      ]);
+
+      res.json({
+        profile,
+        user,
+        cards,
+        comments,
+        isLiked,
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch portfolio" });
+    }
+  });
+
+  // Add comment to portfolio
+  app.post("/api/portfolio/:userId/comments", isAuthenticated, async (req: any, res) => {
+    try {
+      const { userId: portfolioUserId } = req.params;
+      const commenterUserId = req.user.claims.sub;
+      const { content } = req.body;
+
+      if (!content || content.trim().length === 0) {
+        return res.status(400).json({ message: "Comment content is required" });
+      }
+
+      // Check if portfolio is public
+      const profile = await storage.getUserProfile(portfolioUserId);
+      if (!profile?.isPublic) {
+        return res.status(403).json({ message: "Cannot comment on private portfolio" });
+      }
+
+      const commentData = insertCommentSchema.parse({
+        portfolioUserId,
+        commenterUserId,
+        content: content.trim(),
+      });
+
+      const comment = await storage.addComment(commentData);
+      res.json(comment);
+    } catch (error) {
+      res.status(400).json({ message: "Failed to add comment" });
+    }
+  });
+
+  // Delete comment
+  app.delete("/api/comments/:commentId", isAuthenticated, async (req: any, res) => {
+    try {
+      const { commentId } = req.params;
+      const userId = req.user.claims.sub;
+      
+      await storage.deleteComment(commentId, userId);
+      res.json({ message: "Comment deleted" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete comment" });
+    }
+  });
+
+  // Toggle like on portfolio
+  app.post("/api/portfolio/:userId/like", isAuthenticated, async (req: any, res) => {
+    try {
+      const { userId: portfolioUserId } = req.params;
+      const likerUserId = req.user.claims.sub;
+
+      if (portfolioUserId === likerUserId) {
+        return res.status(400).json({ message: "Cannot like your own portfolio" });
+      }
+
+      // Check if portfolio is public
+      const profile = await storage.getUserProfile(portfolioUserId);
+      if (!profile?.isPublic) {
+        return res.status(403).json({ message: "Cannot like private portfolio" });
+      }
+
+      const result = await storage.toggleLike(portfolioUserId, likerUserId);
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to toggle like" });
     }
   });
 

@@ -48,6 +48,7 @@ UI/UX Preference: Modern, mobile-first design inspired by Collectr app with clea
 - **Filtering**: Filter by set, condition, and other attributes
 - **View Modes**: Grid and list view options
 - **Statistics**: Portfolio value tracking and analytics
+- **Social Sharing**: External platform sharing with Twitter, Facebook, LinkedIn
 
 ### Market Analysis
 - **Real-time Charts**: Interactive price trends using Recharts library
@@ -56,6 +57,15 @@ UI/UX Preference: Modern, mobile-first design inspired by Collectr app with clea
 - **Market Overview**: Market cap, daily volume, top gainers dashboard
 - **Data Sources**: Pokemon TCG API, TCGPlayer, and eBay integration
 - **Performance Tracking**: Top performing cards with price change indicators
+
+### Social Platform Features
+- **Public Portfolios**: Users can make portfolios public for community viewing
+- **Community Feed**: Browse trending and popular public portfolios
+- **Portfolio Comments**: Users can comment on public portfolios
+- **Portfolio Likes**: Like system for community engagement
+- **Profile Management**: Custom display names, bios, and public/private settings
+- **View Tracking**: Analytics for portfolio views and engagement
+- **Community Navigation**: Dedicated community page with portfolio discovery
 
 ### UI/UX Features
 - **Modern Collectr-inspired Design**: Blue/purple gradients, glassmorphism effects, hover animations

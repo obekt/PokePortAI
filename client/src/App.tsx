@@ -7,6 +7,8 @@ import { useAuth } from "@/hooks/useAuth";
 import Home from "@/pages/home";
 import Landing from "@/pages/landing";
 import CardDetails from "@/pages/card-details";
+import Community from "@/pages/community";
+import PublicPortfolio from "@/pages/public-portfolio";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -22,6 +24,8 @@ function Router() {
         <>
           <Route path="/" component={Home} />
           <Route path="/card/:cardName" component={CardDetails} />
+          <Route path="/community" component={Community} />
+          <Route path="/portfolio/:userId" component={PublicPortfolio} />
         </>
       )}
       <Route component={NotFound} />

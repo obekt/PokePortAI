@@ -4,8 +4,10 @@ import CardScanner from "@/components/CardScanner";
 import PortfolioGrid from "@/components/PortfolioGrid";
 import TrendingCardsGrid from "@/components/TrendingCardsGrid";
 import { Button } from "@/components/ui/button";
-import { Camera, Folder, TrendingUp, Plus } from "lucide-react";
+import { Camera, Folder, TrendingUp, Plus, Users } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import ProfileSettings from "@/components/ProfileSettings";
+import { Link } from "wouter";
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState<'scanner' | 'portfolio' | 'market'>('scanner');
@@ -67,6 +69,56 @@ export default function Home() {
               </div>
             </div>
             <TrendingCardsGrid />
+          </div>
+        </section>
+
+        {/* Community Section */}
+        <section id="community" className="mb-12">
+          <div className="card-glass p-8 rounded-2xl">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center">
+                <div className="gradient-secondary p-3 rounded-xl mr-4">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+                    Community
+                  </h2>
+                  <p className="text-slate-500 text-sm">Connect with other Pokemon card collectors</p>
+                </div>
+              </div>
+              <Link href="/community">
+                <Button className="gradient-primary">
+                  <Users className="h-4 w-4 mr-2" />
+                  Explore Community
+                </Button>
+              </Link>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <ProfileSettings />
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-slate-800">Community Features</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3 text-slate-600">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <span>Share your portfolio publicly</span>
+                  </div>
+                  <div className="flex items-center space-x-3 text-slate-600">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span>Browse other collectors' cards</span>
+                  </div>
+                  <div className="flex items-center space-x-3 text-slate-600">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                    <span>Leave comments and get feedback</span>
+                  </div>
+                  <div className="flex items-center space-x-3 text-slate-600">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                    <span>Like and follow trending portfolios</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </main>
