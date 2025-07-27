@@ -9,6 +9,7 @@ import Landing from "@/pages/landing";
 import CardDetails from "@/pages/card-details";
 import Community from "@/pages/community";
 import PublicPortfolio from "@/pages/public-portfolio";
+import ProfileSettings from "@/pages/profile-settings";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -26,6 +27,7 @@ function Router() {
           <Route path="/card/:cardName" component={CardDetails} />
           <Route path="/community" component={Community} />
           <Route path="/portfolio/:userId" component={PublicPortfolio} />
+          <Route path="/profile/settings" component={ProfileSettings} />
         </>
       )}
       <Route component={NotFound} />

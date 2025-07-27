@@ -4,9 +4,8 @@ import CardScanner from "@/components/CardScanner";
 import PortfolioGrid from "@/components/PortfolioGrid";
 import TrendingCardsGrid from "@/components/TrendingCardsGrid";
 import { Button } from "@/components/ui/button";
-import { Camera, Folder, TrendingUp, Plus, Users } from "lucide-react";
+import { Camera, Folder, TrendingUp, Plus, Users, Settings } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import ProfileSettings from "@/components/ProfileSettings";
 import { Link } from "wouter";
 
 export default function Home() {
@@ -96,7 +95,29 @@ export default function Home() {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <ProfileSettings />
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-slate-800">Get Started</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3 text-slate-600">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <span>Set up your public profile</span>
+                  </div>
+                  <div className="flex items-center space-x-3 text-slate-600">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span>Make your portfolio public</span>
+                  </div>
+                  <div className="flex items-center space-x-3 text-slate-600">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                    <span>Connect with other collectors</span>
+                  </div>
+                </div>
+                <Link href="/profile/settings">
+                  <Button className="gradient-secondary w-full">
+                    <Settings className="h-4 w-4 mr-2" />
+                    Manage Profile Settings
+                  </Button>
+                </Link>
+              </div>
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-slate-800">Community Features</h3>
                 <div className="space-y-3">

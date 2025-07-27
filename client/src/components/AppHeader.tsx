@@ -76,7 +76,7 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
               <Button
                 variant="ghost"
                 className="nav-item text-slate-600 hover:text-blue-600 hover:bg-blue-50"
-                onClick={() => window.location.href = '/community'}
+                onClick={() => window.location.pathname = '/community'}
               >
                 Community
               </Button>
@@ -92,7 +92,11 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
             </div>
             
             {user && (
-              <div className="flex items-center space-x-3 bg-white/50 rounded-xl px-3 py-2 border border-slate-200">
+              <Button
+                onClick={() => window.location.pathname = '/profile/settings'}
+                variant="ghost"
+                className="flex items-center space-x-3 bg-white/50 rounded-xl px-3 py-2 border border-slate-200 hover:bg-blue-50"
+              >
                 {(user as any).profileImageUrl && (
                   <img 
                     src={(user as any).profileImageUrl} 
@@ -105,7 +109,7 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
                     {(user as any).firstName || (user as any).email?.split('@')[0] || 'User'}
                   </p>
                 </div>
-              </div>
+              </Button>
             )}
             
             <Button 
