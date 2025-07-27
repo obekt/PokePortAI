@@ -73,6 +73,13 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
               >
                 Market
               </Button>
+              <Button
+                variant="ghost"
+                className="nav-item text-slate-600 hover:text-blue-600 hover:bg-blue-50"
+                onClick={() => window.location.href = '/community'}
+              >
+                Community
+              </Button>
             </nav>
           )}
           

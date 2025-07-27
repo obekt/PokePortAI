@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Scan, TrendingUp, ShieldCheck, Camera } from "lucide-react";
+import { Scan, TrendingUp, Users, Camera } from "lucide-react";
 import TradingCardLogo from "@/components/TradingCardLogo";
 
 export default function Landing() {
@@ -77,13 +77,13 @@ export default function Landing() {
           <Card className="card-glass text-center p-6">
             <CardHeader>
               <div className="gradient-accent p-3 rounded-xl w-fit mx-auto mb-4">
-                <ShieldCheck className="w-8 h-8 text-white" />
+                <Users className="w-8 h-8 text-white" />
               </div>
-              <CardTitle className="text-slate-800 font-bold">Secure & Private</CardTitle>
+              <CardTitle className="text-slate-800 font-bold">Social Community</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription className="text-slate-600">
-                Your collection data is securely stored and only accessible to you
+                Connect with fellow collectors, share portfolios, and discover amazing collections
               </CardDescription>
             </CardContent>
           </Card>

@@ -220,11 +220,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/profile", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      const validatedData = insertUserProfileSchema.parse(req.body);
+      console.log("Updating profile for user:", userId);
+      console.log("Request body:", req.body);
+      
+      const validatedData = insertUserProfileSchema.parse({
+        userId: userId,
+        ...req.body
+      });
+      console.log("Validated data:", validatedData);
+      
       const profile = await storage.upsertUserProfile(userId, validatedData);
       res.json(profile);
     } catch (error) {
-      res.status(400).json({ message: "Invalid profile data" });
+      console.error("Profile update error:", error);
+      res.status(400).json({ 
+        message: "Invalid profile data",
+        error: (error as Error).message 
+      });
     }
   });
 
