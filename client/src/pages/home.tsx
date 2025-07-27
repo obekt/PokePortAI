@@ -17,9 +17,8 @@ export default function Home() {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    if (isMobile) {
-      setActiveSection(sectionId as any);
-    }
+    // Always update activeSection state for both mobile and desktop
+    setActiveSection(sectionId as any);
   };
 
   return (
