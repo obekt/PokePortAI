@@ -156,3 +156,13 @@ UI/UX Preference: Modern, mobile-first design inspired by Collectr app with clea
 - **Storage**: In-memory fallback for development/testing
 - **API**: Stateless REST API design for horizontal scaling
 - **Frontend**: Static assets can be CDN distributed
+
+## Recent Changes (January 27, 2025)
+- Fixed profile update API endpoint with proper schema validation and error handling
+- Added Community tab to top navigation with direct routing to prevent 404 errors
+- Created dedicated Profile Settings page accessible by clicking username in header
+- Updated landing page to showcase social community features instead of security features
+- Implemented public portfolio toggle functionality with clear visual feedback
+- Fixed navigation issues by using proper wouter Link components instead of window.location
+- Prevented users from liking their own portfolios with clear visual feedback
+- Updated GitHub README with comprehensive documentation of all social platform features

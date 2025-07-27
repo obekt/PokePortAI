@@ -1,170 +1,201 @@
-# Poke Port AI 🎴
+# 🎯 Poke Port AI
 
-A sophisticated Pokemon card portfolio management application that leverages AI and modern web technologies to help collectors track, analyze, and enhance their card collections.
+A sophisticated Pokemon card portfolio management application that leverages AI and modern web technologies to help collectors track, analyze, and share their card collections with a thriving community.
 
-## 🌟 Live Demo
+![Poke Port AI Demo](https://poke-port-ai.obekt.com/)
 
-**Try it now: [https://poke-port-ai.obekt.com/](https://poke-port-ai.obekt.com/)**
+## 🚀 Live Demo
 
-## ✨ Features
+**Production URL**: [https://poke-port-ai.obekt.com/](https://poke-port-ai.obekt.com/)
+
+Experience the full power of AI-driven Pokemon card recognition and social portfolio management.
+
+## ✨ Key Features
 
 ### 🤖 AI-Powered Card Recognition
-- **Smart Scanner**: Upload photos or use camera to instantly identify Pokemon cards
-- **OpenAI Vision**: Advanced AI recognition with 60%+ confidence threshold
-- **Automatic Valuation**: Real-time market price lookup after recognition
-- **Multiple Formats**: Supports various card conditions and sets
+- **OpenAI GPT-4o Vision**: Advanced card identification with 60%+ confidence threshold
+- **Camera Integration**: Real-time card scanning with live preview
+- **Official Image Replacement**: User photos used for recognition only, official Pokemon TCG API images for display
+- **Automatic Market Integration**: Price lookup and official image fetching after recognition
 
-### 📊 Portfolio Management  
-- **Complete Collection Tracking**: Organize and manage your entire card portfolio
-- **Advanced Filtering**: Filter by set, condition, rarity, and value
-- **Price Change Analytics**: Track performance vs purchase price
-- **Export Options**: Download your collection data
-- **Multiple View Modes**: Grid and list layouts for optimal viewing
+### 📊 Portfolio Management
+- **Smart Card Collection**: CRUD operations with advanced filtering and sorting
+- **Real-time Market Data**: Live pricing from Pokemon TCG API and TCGPlayer
+- **Portfolio Analytics**: Value tracking, performance metrics, and trend analysis
+- **Multiple View Modes**: Grid and list layouts optimized for different use cases
 
-### 💹 Market Analysis
-- **Real-Time Pricing**: Live market data from TCGPlayer and Pokemon TCG API
-- **Interactive Charts**: 6-month price history with trend analysis
-- **Trading Volume**: Monthly activity tracking with bar charts
-- **Market Rankings**: Performance indicators and top movers
-- **Price Alerts**: Track your collection's market performance
+### 📈 Market Analysis & Trends
+- **Interactive Charts**: Real-time price trends using Recharts visualization
+- **Historical Data**: 6-month price history with detailed trend analysis
+- **Trading Volume**: Monthly activity tracking with comprehensive analytics
+- **Market Dashboard**: Live market cap, daily volume, and top performers
+- **Performance Tracking**: Top gaining cards with price change indicators
 
-### 🎨 Modern User Experience
-- **Mobile-First Design**: Optimized for all devices with responsive layout
-- **Collectr-Inspired UI**: Clean gradients, glassmorphism effects, and smooth animations
-- **Intuitive Navigation**: Bottom navigation for mobile, sidebar for desktop
-- **Card Details Pages**: Comprehensive analytics for individual cards
-- **Dark/Light Themes**: Automatic theme switching support
+### 🌟 Social Platform Features
+- **Public Portfolios**: Share collections with the community
+- **Community Discovery**: Browse trending and popular portfolios
+- **Engagement System**: Like and comment on public portfolios
+- **Profile Management**: Custom display names, bios, and privacy settings
+- **View Analytics**: Track portfolio views and community engagement
+- **Social Sharing**: External platform integration (Twitter, Facebook, LinkedIn)
 
-## 🛠️ Technology Stack
+### 🎨 Modern UI/UX
+- **Collectr-Inspired Design**: Blue/purple gradients with glassmorphism effects
+- **Mobile-First**: Responsive design with touch-friendly interactions
+- **Component Library**: Consistent design system using shadcn/ui
+- **Card-Based Navigation**: Intuitive portfolio and trending card interactions
+- **Smooth Animations**: Hover effects and seamless page transitions
+
+## 🛠 Technology Stack
 
 ### Frontend
-- **React 18** with TypeScript for type-safe development
-- **Tailwind CSS** + **shadcn/ui** for modern component design
+- **React 18** with TypeScript for type safety
+- **Tailwind CSS** + **shadcn/ui** for modern, responsive design
 - **TanStack Query** for efficient server state management
 - **Wouter** for lightweight client-side routing
-- **Recharts** for interactive data visualization
-- **Vite** for fast development and optimized builds
+- **Vite** for lightning-fast development and optimized builds
+- **Radix UI** primitives for accessible component foundations
 
 ### Backend
-- **Node.js** + **Express.js** with TypeScript
+- **Node.js** + **Express.js** for robust API server
+- **TypeScript** with ES modules for modern development
 - **Drizzle ORM** for type-safe database operations
-- **PostgreSQL** with Neon serverless hosting
-- **Replit OAuth** for secure authentication
-- **Multer** for image upload handling (50MB limit)
+- **PostgreSQL** with Neon serverless for scalable data storage
+- **Multer** for secure file upload handling (50MB limit)
 
 ### AI & External Services
-- **OpenAI GPT-4o Vision** for card recognition
-- **Pokemon TCG API** for card data and pricing
-- **TCGPlayer Integration** for market pricing
-- **eBay API** for sold listings data
+- **OpenAI GPT-4o** for advanced image recognition
+- **Pokemon TCG API** for official card data and images
+- **TCGPlayer API** for real-time market pricing
+- **Replit OAuth** for secure, seamless authentication
 
-## 🚀 Getting Started
+## 🏗 Architecture Overview
+
+### Data Flow
+1. **Card Recognition**: User photos → OpenAI API → Card identification → Official image replacement
+2. **Portfolio Management**: Database storage → Real-time updates → Client-side filtering
+3. **Market Integration**: External APIs → Price aggregation → Live trend visualization
+4. **Social Features**: Public profiles → Community feeds → Engagement tracking
+
+### Security & Performance
+- **Authentication**: Session-based auth with Replit OAuth integration
+- **Data Validation**: Zod schemas for type-safe API operations
+- **Image Processing**: Automatic compression and optimization
+- **Database Optimization**: Efficient queries with Drizzle ORM
+- **Caching Strategy**: React Query for optimal data fetching
+
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
-- PostgreSQL database
-- OpenAI API key
+- Node.js 18+ and npm
+- PostgreSQL database (or Neon serverless)
+- OpenAI API key for card recognition
 
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/poke-port-ai.git
-   cd poke-port-ai
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   # Create .env file
-   DATABASE_URL=your_postgresql_url
-   OPENAI_API_KEY=your_openai_key
-   SESSION_SECRET=your_session_secret
-   ```
-
-4. **Initialize database**
-   ```bash
-   npm run db:push
-   ```
-
-5. **Start development server**
-   ```bash
-   npm run dev
-   ```
-
-6. **Open your browser**
-   Navigate to `http://localhost:5000`
-
-## 📱 Usage
-
-### Scanning Cards
-1. Click the **Scanner** section or camera button
-2. Upload an image or use your device camera
-3. AI will identify the card and fetch market data
-4. Review and add to your portfolio
-
-### Managing Portfolio
-1. View all cards in the **Portfolio** section
-2. Filter by set, condition, or value
-3. Click any card to view detailed analytics
-4. Edit card details or remove from collection
-
-### Market Analysis
-1. Check **Market** section for trending cards
-2. View price histories and trading volumes
-3. Compare your portfolio performance
-4. Track market rankings and changes
-
-## 🏗️ Project Structure
-
-```
-├── client/                 # React frontend application
-│   ├── src/
-│   │   ├── components/     # Reusable UI components
-│   │   ├── pages/          # Route pages (home, landing, card-details)
-│   │   ├── hooks/          # Custom React hooks
-│   │   └── lib/            # Utilities and configurations
-├── server/                 # Express backend application
-│   ├── services/           # Business logic and external APIs
-│   ├── routes.ts           # API endpoint definitions
-│   └── storage.ts          # Database operations
-├── shared/                 # Shared types and schemas
-│   └── schema.ts           # Drizzle database schema
-└── README.md
+### Environment Setup
+```bash
+# Required environment variables
+DATABASE_URL=your_postgresql_connection_string
+OPENAI_API_KEY=your_openai_api_key
+SESSION_SECRET=your_session_secret
+REPL_ID=your_replit_app_id
+REPLIT_DOMAINS=your_deployment_domains
 ```
 
-## 🔧 Available Scripts
+### Installation & Development
+```bash
+# Install dependencies
+npm install
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run db:push` - Push schema changes to database
-- `npm run db:studio` - Open database studio
-- `npm start` - Start production server
+# Set up database schema
+npm run db:push
 
-## 🌍 Deployment
+# Start development server
+npm run dev
+```
 
-The application is designed for deployment on Replit with automatic:
-- Database provisioning (PostgreSQL)
-- Environment variable management
-- SSL/TLS certificate handling
-- Domain configuration
+### Production Deployment
+```bash
+# Build for production
+npm run build
 
-For other platforms, ensure you have:
-- PostgreSQL database
-- Environment variables configured
-- Static file serving enabled
+# Start production server
+npm start
+```
+
+## 📱 Usage Guide
+
+### Getting Started
+1. **Sign Up**: Use Replit OAuth for instant, secure authentication
+2. **Scan Cards**: Use the camera to scan Pokemon cards with AI recognition
+3. **Build Portfolio**: Organize your collection with smart categorization
+4. **Go Social**: Make your portfolio public and join the community
+
+### Community Features
+1. **Profile Setup**: Click your username → Profile Settings
+2. **Make Public**: Toggle "Public Portfolio" in privacy settings
+3. **Community Browse**: Visit Community tab to discover collections
+4. **Engage**: Like and comment on portfolios you find interesting
+
+### Portfolio Management
+- **Add Cards**: Camera scan or manual entry with AI assistance
+- **Track Value**: Real-time market prices and portfolio analytics
+- **Filter & Sort**: Advanced search with multiple criteria
+- **Market Analysis**: Click any card for detailed price trends
+
+## 🔧 Development
+
+### Project Structure
+```
+├── client/          # React frontend application
+├── server/          # Express.js backend API
+├── shared/          # Shared TypeScript schemas
+├── components.json  # shadcn/ui configuration
+└── package.json     # Dependencies and scripts
+```
+
+### Key Scripts
+- `npm run dev` - Start development server with hot reload
+- `npm run build` - Build optimized production bundle
+- `npm run db:push` - Apply database schema changes
+- `npm run db:studio` - Open Drizzle Studio for database management
+
+### API Endpoints
+- `GET /api/cards` - Retrieve user's card collection
+- `POST /api/cards/scan` - AI-powered card recognition
+- `GET /api/portfolio/stats` - Portfolio analytics
+- `GET /api/community/portfolios` - Public portfolio feed
+- `POST /api/portfolio/:userId/like` - Social engagement
+
+## 🌟 Screenshots
+
+![AI Card Recognition](./docs/card-scanner.png)
+*AI-powered card recognition with live camera preview*
+
+![Portfolio Dashboard](./docs/portfolio-dashboard.png)
+*Comprehensive portfolio management with market analytics*
+
+![Community Features](./docs/community-features.png)
+*Social platform with public portfolios and engagement*
+
+![Market Analysis](./docs/market-analysis.png)
+*Real-time market trends and price analysis*
 
 ## 🤝 Contributing
 
+We welcome contributions! Please read our contributing guidelines:
+
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+### Development Guidelines
+- Follow TypeScript best practices
+- Use existing component library (shadcn/ui)
+- Maintain responsive design principles
+- Write comprehensive error handling
+- Include proper type definitions
 
 ## 📄 License
 
@@ -172,18 +203,18 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- **OpenAI** for GPT-4o Vision API
-- **Pokemon Company** for the Pokemon TCG
-- **TCGPlayer** for market data
-- **shadcn/ui** for beautiful UI components
-- **Replit** for hosting and development platform
+- **OpenAI** for GPT-4o vision capabilities
+- **Pokemon TCG API** for official card data
+- **Replit** for seamless hosting and OAuth
+- **shadcn/ui** for beautiful component library
+- **Vercel** for design inspiration
 
 ## 📞 Support
 
-For support, email [support@obekt.com](mailto:support@obekt.com) or create an issue on GitHub.
+- **Issues**: [GitHub Issues](https://github.com/yourusername/poke-port-ai/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/poke-port-ai/discussions)
+- **Email**: support@obekt.com
 
 ---
 
-**© 2025 ObekT Softworks. All rights reserved.**
-
-Built with ❤️ for Pokemon card collectors worldwide.
+**Copyright © 2025 ObekT Softworks** - Built with ❤️ for the Pokemon card collecting community
