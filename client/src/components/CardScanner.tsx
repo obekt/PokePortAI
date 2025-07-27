@@ -47,8 +47,9 @@ export default function CardScanner() {
     },
     onSuccess: (data: RecognitionResult) => {
       setScanResult(data);
-      // Use official image from recognition result or fallback to scan response imageUrl
-      setImagePreview(data.recognition.imageUrl || data.imageUrl);
+      // Always prefer official image from market price data, then recognition, then fallback
+      const officialImage = data.marketPrice.imageUrl || data.recognition.imageUrl;
+      setImagePreview(officialImage || data.imageUrl);
       toast({
         title: "Card recognized successfully!",
         description: `Identified as ${data.recognition.name} from ${data.recognition.set}`,
@@ -242,8 +243,8 @@ export default function CardScanner() {
         cardNumber: scanResult.recognition.cardNumber,
         condition: scanResult.recognition.condition,
         estimatedValue: scanResult.marketPrice.averagePrice.toString(),
-        // Use official image if available, otherwise use uploaded image
-        imageUrl: scanResult.recognition.imageUrl || scanResult.marketPrice.imageUrl || scanResult.imageUrl,
+        // Prioritize official images: market price image, then recognition image, then uploaded image
+        imageUrl: scanResult.marketPrice.imageUrl || scanResult.recognition.imageUrl || scanResult.imageUrl,
         recognitionData: scanResult.recognition,
       };
       addToPortfolioMutation.mutate(cardData);

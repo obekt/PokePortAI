@@ -35,6 +35,7 @@ export async function getMarketPrice(cardName: string, set: string, condition: s
         },
         recentSales: tcgPrice.recentSales || Math.floor(Math.random() * 30) + 15,
         priceChange: Number((tcgPrice.priceChange || (Math.random() - 0.5) * 15).toFixed(2)),
+        imageUrl: tcgPrice.imageUrl
       };
     }
   } catch (error) {
@@ -45,6 +46,9 @@ export async function getMarketPrice(cardName: string, set: string, condition: s
   const basePrice = calculateBasePrice(cardName, set);
   const conditionMultiplier = getConditionMultiplier(condition);
   const averagePrice = basePrice * conditionMultiplier;
+  
+  // Try to get official image from Pokemon TCG API for fallback cases
+  const officialImage = await getOfficialCardImage(cardName, set);
   
   return {
     cardName,
@@ -57,6 +61,7 @@ export async function getMarketPrice(cardName: string, set: string, condition: s
     },
     recentSales: Math.floor(Math.random() * 40) + 20,
     priceChange: Number(((Math.random() - 0.5) * 12).toFixed(2)),
+    imageUrl: officialImage
   };
 }
 
@@ -121,6 +126,54 @@ async function fetchPokemonTCGPrice(cardName: string, set: string): Promise<{ave
   } catch (error) {
     console.error("Pokemon TCG API fetch error:", error);
     return null;
+  }
+}
+
+// Helper function to get official card image
+async function getOfficialCardImage(cardName: string, set: string): Promise<string | undefined> {
+  try {
+    const searchQueries = [
+      `name:"${cardName}"${set && set !== "Unknown Set" ? ` set.name:"${set}"` : ''}`,
+      `name:"${cardName}"`,
+      cardName.replace(/[^\w\s]/g, '')
+    ];
+    
+    for (const query of searchQueries) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      
+      try {
+        const searchQuery = encodeURIComponent(query);
+        const response = await fetch(`https://api.pokemontcg.io/v2/cards?q=${searchQuery}&pageSize=5`, {
+          signal: controller.signal,
+          headers: {
+            'User-Agent': 'PokePortAI/1.0 (Card Portfolio App)',
+            'Accept': 'application/json'
+          }
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) continue;
+        
+        const data = await response.json();
+        
+        if (data.data && data.data.length > 0) {
+          const bestMatch = findBestCardMatch(data.data, cardName, set);
+          if (bestMatch?.images) {
+            return bestMatch.images.small || bestMatch.images.large;
+          }
+        }
+      } catch (queryError) {
+        clearTimeout(timeoutId);
+        continue;
+      }
+    }
+    
+    return undefined;
+  } catch (error) {
+    console.error("Error fetching official card image:", error);
+    return undefined;
   }
 }
 
