@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Camera, UserCircle, LogOut } from "lucide-react";
+import { Link } from "wouter";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
@@ -73,13 +74,14 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
               >
                 Market
               </Button>
-              <Button
-                variant="ghost"
-                className="nav-item text-slate-600 hover:text-blue-600 hover:bg-blue-50"
-                onClick={() => window.location.pathname = '/community'}
-              >
-                Community
-              </Button>
+              <Link href="/community">
+                <Button
+                  variant="ghost"
+                  className="nav-item text-slate-600 hover:text-blue-600 hover:bg-blue-50"
+                >
+                  Community
+                </Button>
+              </Link>
             </nav>
           )}
           
@@ -92,24 +94,25 @@ export default function AppHeader({ activeSection, onNavigate }: AppHeaderProps)
             </div>
             
             {user && (
-              <Button
-                onClick={() => window.location.pathname = '/profile/settings'}
-                variant="ghost"
-                className="flex items-center space-x-3 bg-white/50 rounded-xl px-3 py-2 border border-slate-200 hover:bg-blue-50"
-              >
-                {(user as any).profileImageUrl && (
-                  <img 
-                    src={(user as any).profileImageUrl} 
-                    alt="Profile" 
-                    className="w-8 h-8 rounded-full object-cover ring-2 ring-blue-100"
-                  />
-                )}
-                <div className="text-sm hidden sm:block">
-                  <p className="font-semibold text-slate-800">
-                    {(user as any).firstName || (user as any).email?.split('@')[0] || 'User'}
-                  </p>
-                </div>
-              </Button>
+              <Link href="/profile/settings">
+                <Button
+                  variant="ghost"
+                  className="flex items-center space-x-3 bg-white/50 rounded-xl px-3 py-2 border border-slate-200 hover:bg-blue-50"
+                >
+                  {(user as any).profileImageUrl && (
+                    <img 
+                      src={(user as any).profileImageUrl} 
+                      alt="Profile" 
+                      className="w-8 h-8 rounded-full object-cover ring-2 ring-blue-100"
+                    />
+                  )}
+                  <div className="text-sm hidden sm:block">
+                    <p className="font-semibold text-slate-800">
+                      {(user as any).firstName || (user as any).email?.split('@')[0] || 'User'}
+                    </p>
+                  </div>
+                </Button>
+              </Link>
             )}
             
             <Button 

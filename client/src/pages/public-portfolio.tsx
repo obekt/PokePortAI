@@ -229,7 +229,7 @@ export default function PublicPortfolio() {
               <div className="text-right">
                 <p className="text-3xl font-bold text-slate-800">${totalValue.toLocaleString()}</p>
                 <p className="text-slate-500 text-sm">{cards.length} cards</p>
-                {currentUser && (
+                {currentUser && currentUser.id !== userId && (
                   <Button
                     onClick={() => likeMutation.mutate()}
                     disabled={likeMutation.isPending}
@@ -239,6 +239,11 @@ export default function PublicPortfolio() {
                     <Heart className={`h-4 w-4 mr-2 ${isLiked ? 'fill-current' : ''}`} />
                     {isLiked ? 'Liked' : 'Like'}
                   </Button>
+                )}
+                {currentUser && currentUser.id === userId && (
+                  <div className="mt-4 text-center">
+                    <p className="text-slate-500 text-sm">This is your portfolio</p>
+                  </div>
                 )}
               </div>
             </div>
