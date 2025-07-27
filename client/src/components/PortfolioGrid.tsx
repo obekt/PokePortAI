@@ -9,6 +9,7 @@ import { useLocation } from "wouter";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { Download, BarChart3, Eye, Trash2, Grid3X3, List, Loader2, Edit, ExternalLink } from "lucide-react";
 import EditCardDialog from "./EditCardDialog";
+import SocialShareButton from "./SocialShareButton";
 import { useState, useEffect } from "react";
 import type { Card as CardType } from "@shared/schema";
 
@@ -121,6 +122,18 @@ export default function PortfolioGrid({ onCardSelect, selectedCard }: PortfolioG
             </p>
           </div>
           <div className="flex space-x-3">
+            {portfolioStats && portfolioStats.totalCards > 0 && (
+              <SocialShareButton 
+                portfolioStats={{
+                  totalCards: portfolioStats.totalCards,
+                  totalValue: portfolioStats.totalValue,
+                  topCard: portfolioStats.topCard ? {
+                    name: portfolioStats.topCard,
+                    value: "0.00"
+                  } : undefined
+                }}
+              />
+            )}
             <Button variant="outline">
               <Download className="mr-2 h-4 w-4" />
               Export

@@ -17,14 +17,16 @@ interface RecognitionResult {
     confidence: number;
     rarity?: string;
     type?: string;
+    imageUrl?: string; // Official Pokemon TCG API image
   };
   marketPrice: {
     averagePrice: number;
     priceRange: { low: number; high: number };
     recentSales: number;
     priceChange: number;
+    imageUrl?: string;
   };
-  imageUrl: string;
+  imageUrl: string; // Fallback image (user uploaded)
 }
 
 export default function CardScanner() {
@@ -45,7 +47,8 @@ export default function CardScanner() {
     },
     onSuccess: (data: RecognitionResult) => {
       setScanResult(data);
-      setImagePreview(data.imageUrl);
+      // Use official image from recognition result or fallback to scan response imageUrl
+      setImagePreview(data.recognition.imageUrl || data.imageUrl);
       toast({
         title: "Card recognized successfully!",
         description: `Identified as ${data.recognition.name} from ${data.recognition.set}`,
@@ -239,7 +242,8 @@ export default function CardScanner() {
         cardNumber: scanResult.recognition.cardNumber,
         condition: scanResult.recognition.condition,
         estimatedValue: scanResult.marketPrice.averagePrice.toString(),
-        imageUrl: scanResult.imageUrl,
+        // Use official image if available, otherwise use uploaded image
+        imageUrl: scanResult.recognition.imageUrl || scanResult.marketPrice.imageUrl || scanResult.imageUrl,
         recognitionData: scanResult.recognition,
       };
       addToPortfolioMutation.mutate(cardData);

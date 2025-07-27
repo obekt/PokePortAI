@@ -78,9 +78,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       );
 
       res.json({
-        recognition,
+        recognition: {
+          ...recognition,
+          // Replace user image with official Pokemon TCG API image if available
+          imageUrl: marketPrice.imageUrl
+        },
         marketPrice,
-        imageUrl: `data:${req.file.mimetype};base64,${base64Image}`
+        // Use official image if available, otherwise fall back to user's image
+        imageUrl: marketPrice.imageUrl || `data:${req.file.mimetype};base64,${base64Image}`
       });
     } catch (error) {
       console.error("Card scanning error:", error);
