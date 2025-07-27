@@ -37,10 +37,11 @@ UI/UX Preference: Modern, mobile-first design inspired by Collectr app with clea
 ## Key Components
 
 ### Card Scanner
-- **Image Upload**: Supports camera capture and file upload
+- **Image Upload**: Supports camera capture and file upload (for recognition only)
 - **AI Recognition**: OpenAI GPT-4o vision model for card identification
-- **Market Integration**: Automatic price lookup after recognition
-- **Real-time Preview**: Live camera feed and image preview
+- **Official Image Replacement**: User photos only used for AI recognition, official Pokemon TCG API images used for display and storage
+- **Market Integration**: Automatic price lookup and official image fetching after recognition
+- **Real-time Preview**: Live camera feed with official card image replacement
 
 ### Portfolio Management
 - **Card Collection**: CRUD operations for user's card collection
@@ -66,11 +67,12 @@ UI/UX Preference: Modern, mobile-first design inspired by Collectr app with clea
 ## Data Flow
 
 1. **Card Scanning Flow**:
-   - User uploads/captures card image
+   - User uploads/captures card image (for recognition only)
    - Image converted to base64 and sent to OpenAI API
    - AI returns card recognition data
-   - Market price lookup performed
-   - Card saved to database with recognition results
+   - Market price lookup and official image fetching performed
+   - Official Pokemon TCG API image replaces user's photo
+   - Card saved to database with official image and recognition results
 
 2. **Portfolio Flow**:
    - Cards retrieved from database

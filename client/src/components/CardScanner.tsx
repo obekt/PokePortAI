@@ -47,9 +47,16 @@ export default function CardScanner() {
     },
     onSuccess: (data: RecognitionResult) => {
       setScanResult(data);
-      // Always prefer official image from market price data, then recognition, then fallback
+      // ALWAYS use official image from Pokemon TCG API, never show user's uploaded image
       const officialImage = data.marketPrice.imageUrl || data.recognition.imageUrl;
-      setImagePreview(officialImage || data.imageUrl);
+      if (officialImage) {
+        setImagePreview(officialImage);
+        console.log("Using official Pokemon card image:", officialImage);
+      } else {
+        console.warn("No official image found, keeping user image for preview only");
+        setImagePreview(data.imageUrl);
+      }
+      
       toast({
         title: "Card recognized successfully!",
         description: `Identified as ${data.recognition.name} from ${data.recognition.set}`,
@@ -243,8 +250,8 @@ export default function CardScanner() {
         cardNumber: scanResult.recognition.cardNumber,
         condition: scanResult.recognition.condition,
         estimatedValue: scanResult.marketPrice.averagePrice.toString(),
-        // Prioritize official images: market price image, then recognition image, then uploaded image
-        imageUrl: scanResult.marketPrice.imageUrl || scanResult.recognition.imageUrl || scanResult.imageUrl,
+        // ONLY use official images for portfolio - never save user's uploaded image
+        imageUrl: scanResult.marketPrice.imageUrl || scanResult.recognition.imageUrl || "https://images.pokemontcg.io/base1/4.png", // Fallback to a default Pokemon card
         recognitionData: scanResult.recognition,
       };
       addToPortfolioMutation.mutate(cardData);

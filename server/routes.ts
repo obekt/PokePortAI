@@ -77,14 +77,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         recognition.condition
       );
 
+      console.log("Market price response:", { 
+        hasImageUrl: !!marketPrice.imageUrl,
+        imageUrl: marketPrice.imageUrl ? marketPrice.imageUrl.substring(0, 50) + '...' : 'none'
+      });
+
       res.json({
         recognition: {
           ...recognition,
-          // Replace user image with official Pokemon TCG API image if available
+          // Official image from Pokemon TCG API
           imageUrl: marketPrice.imageUrl
         },
         marketPrice,
-        // Use official image if available, otherwise fall back to user's image
+        // Always prioritize official image, user image only for fallback display
         imageUrl: marketPrice.imageUrl || `data:${req.file.mimetype};base64,${base64Image}`
       });
     } catch (error) {
